@@ -1,0 +1,50 @@
+const mainColors = {
+  green1: '#0bcad4',
+  green2: '#EDFCFD',
+  green3: '#7DE1C9',
+  dark1: '#112340',
+  dark2: '#495A75',
+  dark3: '#8092AF',
+  gray1: '#7d8797',
+  gray2: '#e9e9e9',
+  gray3: '#EDEEF0',
+  gray4: '#FBFBFB',
+  blue1: '#0066CB',
+  blue2: '#EDFCFD',
+  black1: '#000000',
+  black2: '#2B2B2B',
+  black3: '#8A8A8A',
+  red1: '#e06379',
+};
+
+export const colors = {
+  container: mainColors.gray4,
+  primary: mainColors.green1,
+  secondary: mainColors.dark1,
+  tertiary: mainColors.blue1,
+  white: 'white',
+  black: 'black',
+  disable: mainColors.gray3,
+  cardLight: mainColors.blue2,
+  text: {
+    primary: mainColors.black2,
+    secondary: mainColors.green3,
+    menuInActive: mainColors.dark2,
+    menuActive: mainColors.green1,
+    subTitle: mainColors.black3,
+  },
+  button: {
+    primary: {
+      bacground: mainColors.green1,
+      text: 'white',
+    },
+    secondary: {
+      bacground: 'white',
+      text: mainColors.dark1,
+    },
+  },
+  border: mainColors.gray2,
+  cardLight: mainColors.green2,
+  loadingBackground: mainColors.black2,
+  error: mainColors.red1,
+};
