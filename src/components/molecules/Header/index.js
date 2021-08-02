@@ -2,9 +2,17 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ICArrow} from '../../../assets';
 import {colors, fonts} from '../../../utils';
+import HeaderJustBtnBack from './HeaderJustBtnBack';
 import HeaderWithAvatar from './HeaderWithAvatar';
 
-export default function index({onPress, title, image, icColor, withAvatar}) {
+export default function index({
+  onPress,
+  title,
+  image,
+  icColor,
+  withAvatar,
+  isJustBtnBack,
+}) {
   if (withAvatar) {
     return (
       <HeaderWithAvatar
@@ -15,6 +23,11 @@ export default function index({onPress, title, image, icColor, withAvatar}) {
       />
     );
   }
+
+  if (isJustBtnBack) {
+    return <HeaderJustBtnBack icColor={icColor} onPress={onPress} />;
+  }
+
   return (
     <View style={styles.headerWrapper}>
       <TouchableOpacity onPress={() => onPress()}>

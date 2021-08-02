@@ -6,9 +6,11 @@ import {colors, fonts} from '../../../utils';
 export default function HeaderWithAvatar({onPress, title, image, icColor}) {
   return (
     <View style={styles.headerWrapper}>
-      <TouchableOpacity onPress={() => onPress()}>
-        <ICArrow color={icColor} />
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={() => onPress()}>
+          <ICArrow color={icColor} />
+        </TouchableOpacity>
+      </View>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.avatar}>
         <Image source={image} style={styles.avatar} />

@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Button, Gap, Input, Link} from '../../components';
-import {ICClose, IMGGetStarted} from '../../assets';
-import {fonts} from '../../utils';
 import {TextInput} from 'react-native-paper';
+import {ICClose, IMGGetStarted} from '../../assets';
+import {Button, Gap, Link} from '../../components';
+import {fonts} from '../../utils';
 
 const GetStarted = ({navigation}) => {
   const [formLogin, setFormLogin] = useState(false);

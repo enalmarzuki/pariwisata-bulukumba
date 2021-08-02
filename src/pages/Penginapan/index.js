@@ -1,23 +1,8 @@
 import React from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {
-  ICStart,
-  ICVilla,
-  IMGDummyProfile,
-  IMGPenginapan1,
-  IMGPenginapan2,
-} from '../../assets';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {IMGDummyProfile, IMGPenginapan1, IMGPenginapan2} from '../../assets';
 import {Card, Gap, Header, SectionTitle} from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors} from '../../utils';
 
 export default function index({navigation}) {
   return (
