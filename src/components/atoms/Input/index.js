@@ -1,44 +1,39 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
-import {colors, fonts} from '../../../utils';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {TextInput} from 'react-native-paper';
+import {colors} from '../../../utils';
 
-const Input = ({label, value, onChangeText, secureTextEntry}) => {
-  const [border, setBorder] = useState(colors.border);
-  const onFocusForm = () => {
-    setBorder(colors.primary);
-  };
-
-  const onBlurForm = () => {
-    setBorder(colors.border);
-  };
-
+export default function Input({
+  onChangeText,
+  label,
+  value,
+  isSecure,
+  keyboardType,
+}) {
   return (
-    <View>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        onFocus={onFocusForm}
-        onBlur={onBlurForm}
-        style={styles.input(border)}
-        value={value}
-        onChangeText={onChangeText}
-        secureTextEntry={secureTextEntry}
-      />
-    </View>
+    <TextInput
+      value={value}
+      onChangeText={onChangeText}
+      secureTextEntry={isSecure}
+      keyboardType={keyboardType || 'default'}
+      label={label}
+      underlineColor={colors.textInputUnderline}
+      style={styles.inputFormLogin}
+      theme={{
+        colors: {
+          background: 'transparent',
+          primary: colors.primary,
+          text: colors.text.primary,
+          placeholder: value ? colors.primary : colors.text.primary,
+        },
+      }}
+    />
   );
-};
-
-export default Input;
+}
 
 const styles = StyleSheet.create({
-  input: border => ({
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: border,
-    padding: 12,
-  }),
-  label: {
-    fontFamily: fonts.primary[600],
-    fontSize: 16,
-    marginBottom: 6,
+  inputFormLogin: {
+    paddingHorizontal: 0,
+    flex: 1,
   },
 });

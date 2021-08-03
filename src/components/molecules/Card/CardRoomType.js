@@ -1,18 +1,20 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
 export default function CardRoomType({onPress, image, title, subTitle}) {
   return (
-    <View style={styles.cardWrapper}>
-      <View style={styles.cardImageWrapper}>
-        <Image source={image} style={styles.cardImage} />
+    <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+      <View style={styles.cardWrapper}>
+        <View style={styles.cardImageWrapper}>
+          <Image source={image} style={styles.cardImage} />
+        </View>
+        <View style={styles.cardBody}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subTitle}>{subTitle}</Text>
+        </View>
       </View>
-      <View style={styles.cardBody}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subTitle}>{subTitle}</Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

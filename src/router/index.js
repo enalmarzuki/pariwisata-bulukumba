@@ -1,6 +1,12 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {DetailPenginapan, GetStarted, Penginapan, SplashScreen} from '../pages';
+import {
+  DetailKamar,
+  DetailPenginapan,
+  GetStarted,
+  Penginapan,
+  SplashScreen,
+} from '../pages';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +31,11 @@ const Router = () => {
       <Stack.Screen
         name="DetailPenginapan"
         component={DetailPenginapan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailKamar"
+        component={DetailKamar}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

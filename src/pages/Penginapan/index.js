@@ -32,18 +32,21 @@ export default function index({navigation}) {
               image={IMGPenginapan1}
               title="Villa Samata"
               subTitle="Pantai Bira, Kel. Bira"
+              onPress={() => navigation.push('DetailPenginapan')}
             />
             <Card
               isRecommendation
               image={IMGPenginapan1}
               title="Villa Samata"
               subTitle="Pantai Bira, Kel. Bira"
+              onPress={() => navigation.push('DetailPenginapan')}
             />
             <Card
               isRecommendation
               image={IMGPenginapan1}
               title="Villa Samata"
               subTitle="Pantai Bira, Kel. Bira"
+              onPress={() => navigation.push('DetailPenginapan')}
             />
             <Gap width={10} />
           </ScrollView>
@@ -63,6 +66,7 @@ export default function index({navigation}) {
             title="Resort Jingga"
             subTitle="Applarang, Kel. Ara"
             rating="4.8"
+            onPress={() => navigation.push('DetailPenginapan')}
           />
           <Card
             isMostVisitor
@@ -70,6 +74,7 @@ export default function index({navigation}) {
             title="Villa Pelangi"
             subTitle="Pantai Bira, Kel. Bira"
             rating="4.5"
+            onPress={() => navigation.push('DetailPenginapan')}
           />
           <Card
             isMostVisitor
@@ -77,6 +82,7 @@ export default function index({navigation}) {
             title="Resort Jingga"
             subTitle="Applarang, Kel. Ara"
             rating="4.8"
+            onPress={() => navigation.push('DetailPenginapan')}
           />
           <Card
             isMostVisitor
@@ -84,6 +90,7 @@ export default function index({navigation}) {
             title="Villa Pelangi"
             subTitle="Pantai Bira, Kel. Bira"
             rating="4.5"
+            onPress={() => navigation.push('DetailPenginapan')}
           />
         </View>
       </ScrollView>

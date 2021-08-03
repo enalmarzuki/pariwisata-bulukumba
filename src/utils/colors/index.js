@@ -10,6 +10,7 @@ const mainColors = {
   gray3: '#EDEEF0',
   gray4: '#FBFBFB',
   gray5: 'rgba(255,255,255, 0.75)',
+  gray6: '#DFDFDF',
   blue1: '#0066CB',
   blue2: '#EDFCFD',
   black1: '#000000',
@@ -20,7 +21,7 @@ const mainColors = {
 
 export const colors = {
   container: mainColors.gray4,
-  primary: mainColors.green1,
+  primary: mainColors.green3,
   secondary: mainColors.dark1,
   tertiary: mainColors.blue1,
   white: 'white',
@@ -48,5 +49,7 @@ export const colors = {
   },
   border: mainColors.gray2,
   loadingBackground: mainColors.black2,
+  textInputUnderline: mainColors.black2,
+  totalBackground: mainColors.gray6,
   error: mainColors.red1,
 };
