@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="DetailPenginapan">
+    <Stack.Navigator initialRouteName="DetailKamar">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}

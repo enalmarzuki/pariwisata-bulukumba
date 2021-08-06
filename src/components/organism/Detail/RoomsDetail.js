@@ -1,3 +1,5 @@
+import moment from 'moment';
+import 'moment/locale/id';
 import React from 'react';
 import {
   Image,
@@ -20,6 +22,11 @@ export default function RoomsDetail({navigation, image}) {
     tglMasuk: '',
     tglKeluar: '',
   });
+
+  const updateData = (e, target) => {
+    const date = moment(e).format('DD MMMM YYYY');
+    setForm(target, date);
+  };
 
   console.log(form);
 
@@ -81,15 +88,17 @@ export default function RoomsDetail({navigation, image}) {
             />
             <View style={styles.inputDateWrapper}>
               <Input
+                type="date"
                 label="Tanggal Masuk"
                 value={form.tglMasuk}
-                onChangeText={value => setForm('tglMasuk', value)}
+                onChangeText={e => updateData(e, 'tglMasuk')}
               />
               <Gap width={25} />
               <Input
+                type="date"
                 label="Tanggal Keluar"
                 value={form.tglKeluar}
-                onChangeText={value => setForm('tglKeluar', value)}
+                onChangeText={e => updateData(e, 'tglKeluar')}
               />
             </View>
           </View>
