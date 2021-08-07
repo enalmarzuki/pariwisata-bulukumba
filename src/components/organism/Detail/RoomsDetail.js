@@ -1,5 +1,5 @@
 import moment from 'moment';
-import 'moment/locale/id';
+// import 'moment/locale/id';
 import React from 'react';
 import {
   Image,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 import {ICAc, ICKulkas, ICMaps, ICTv, ICWifi} from '../../../assets';
 import {colors, fonts, useForm} from '../../../utils';
 import {Gap, Input} from '../../atoms';
@@ -25,8 +26,33 @@ export default function RoomsDetail({navigation, image}) {
 
   const updateData = (e, target) => {
     const date = moment(e).format('DD MMMM YYYY');
-    setForm(target, date);
+
+    if (target === 'tglKeluar') {
+      const checkInDate = moment(new Date(form.tglMasuk)).format('x');
+      const checkOutDate = moment(e).format('x');
+      if (checkOutDate < checkInDate) {
+        return showMessage({
+          message: 'Ooops! Ada yang salah dari tanggal keluar anda',
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        return setForm(target, date);
+      }
+    } else {
+      return setForm(target, date);
+    }
   };
+
+  // const howLongToStay = (masuk, keluar) => {
+  //   const checkIn = masuk.split(' ');
+  //   const checkOut = keluar.split(' ');
+
+  //   const result = checkOut[0] - checkIn[0] + 1;
+
+  //   return result;
+  // };
 
   console.log(form);
 
@@ -101,6 +127,10 @@ export default function RoomsDetail({navigation, image}) {
                 onChangeText={e => updateData(e, 'tglKeluar')}
               />
             </View>
+            {/* <Text>{`Anda akan menginap ${howLongToStay(
+              form.tglMasuk,
+              form.tglKeluar,
+            )} hari`}</Text> */}
           </View>
         </View>
         <Gap height={25} />

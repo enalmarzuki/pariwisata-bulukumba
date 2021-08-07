@@ -6,13 +6,14 @@ import {
   GetStarted,
   Penginapan,
   SplashScreen,
+  MetodePembayaran,
 } from '../pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="DetailKamar">
+    <Stack.Navigator initialRouteName="MetodePembayaran">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -36,6 +37,11 @@ const Router = () => {
       <Stack.Screen
         name="DetailKamar"
         component={DetailKamar}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MetodePembayaran"
+        component={MetodePembayaran}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

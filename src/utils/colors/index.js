@@ -11,6 +11,7 @@ const mainColors = {
   gray4: '#FBFBFB',
   gray5: 'rgba(255,255,255, 0.75)',
   gray6: '#DFDFDF',
+  gray7: '#C4C4C4',
   blue1: '#0066CB',
   blue2: '#EDFCFD',
   black1: '#000000',
@@ -38,12 +39,12 @@ export const colors = {
   },
   button: {
     primary: {
-      bacground: mainColors.green1,
+      background: mainColors.green3,
       text: 'white',
     },
     secondary: {
-      bacground: 'white',
-      text: mainColors.dark1,
+      background: mainColors.gray7,
+      text: 'white',
     },
     bgBtnBack: mainColors.gray5,
   },
