@@ -4,6 +4,8 @@ import Penginapan from './Penginapan';
 import DetailPenginapan from './DetailPenginapan';
 import DetailKamar from './DetailKamar';
 import MetodePembayaran from './MetodePembayaran';
+import KonfirmasiPembayaran from './KonfirmasiPembayaran';
+import ProsesPembayaran from './ProsesPembayaran';
 
 export {
   SplashScreen,
@@ -12,4 +14,6 @@ export {
   DetailPenginapan,
   DetailKamar,
   MetodePembayaran,
+  KonfirmasiPembayaran,
+  ProsesPembayaran,
 };

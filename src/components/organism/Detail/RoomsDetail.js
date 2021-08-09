@@ -140,7 +140,10 @@ export default function RoomsDetail({navigation, image}) {
           <Text style={styles.totalTitle}>Total Harga</Text>
           <Text style={styles.total}>Rp. 660.000</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.7} style={styles.btnBayar}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.btnBayar}
+          onPress={() => navigation.push('MetodePembayaran')}>
           <Text style={styles.textBtn}>Bayar</Text>
         </TouchableOpacity>
       </View>

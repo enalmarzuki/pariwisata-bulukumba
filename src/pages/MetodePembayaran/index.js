@@ -36,10 +36,14 @@ export default function index({navigation}) {
       <View style={styles.buttonWrapper}>
         <TouchableOpacity
           activeOpacity={0.7}
-          style={styles.btnAction('secondary')}>
+          style={styles.btnAction('secondary')}
+          onPress={() => console.log('Ke Home')}>
           <Text style={styles.btnText('secondary')}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.7} style={styles.btnAction()}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.btnAction()}
+          onPress={() => navigation.push('KonfirmasiPembayaran')}>
           <Text style={styles.btnText()}>Konfirmasi</Text>
         </TouchableOpacity>
       </View>

@@ -74,7 +74,7 @@ export default function index({
                     image={room.image}
                     title={room.title}
                     subTitle={room.subTitle}
-                    onPress={() => console.log('Detail Page')}
+                    onPress={() => navigation.push('DetailKamar')}
                   />
                 ))}
                 <Gap width={10} />
