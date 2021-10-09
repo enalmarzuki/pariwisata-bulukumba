@@ -12,6 +12,7 @@ export default function index({navigation}) {
         icColor="#000000"
         title="Penginapan"
         image={IMGDummyProfile}
+        onPress={() => navigation.goBack()}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.wrapper}>

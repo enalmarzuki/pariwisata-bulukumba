@@ -7,7 +7,7 @@ export default function HeaderWithAvatar({onPress, title, image, icColor}) {
   return (
     <View style={styles.headerWrapper}>
       <View>
-        <TouchableOpacity onPress={() => onPress()}>
+        <TouchableOpacity onPress={onPress}>
           <ICArrow color={icColor} />
         </TouchableOpacity>
       </View>

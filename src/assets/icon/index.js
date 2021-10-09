@@ -7,8 +7,24 @@ import ICWifi from './ic-wifi.svg';
 import ICAc from './ic-ac.svg';
 import ICTv from './ic-tv.svg';
 import ICKulkas from './ic-kulkas.svg';
+import ICLocation from './ic-location.svg';
+import ICCalendar from './ic-calendar.svg';
+import ICHome from './ic-home.svg';
+import ICWisata from './ic-wisata.svg';
+import ICKuliner from './ic-kuliner.svg';
+import ICCalendarGreen from './ic-calendar-green.svg';
+import ICLocationGreen from './ic-location-green.svg';
+import ICPlus from './ic-plus.svg';
 
 export {
+  ICPlus,
+  ICCalendarGreen,
+  ICLocationGreen,
+  ICHome,
+  ICWisata,
+  ICKuliner,
+  ICCalendar,
+  ICLocation,
   ICClose,
   ICArrow,
   ICVilla,

@@ -19,6 +19,7 @@ export default function index({
   subTitleSection,
   description,
   roomsData,
+  cardNavigation,
 }) {
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +75,7 @@ export default function index({
                     image={room.image}
                     title={room.title}
                     subTitle={room.subTitle}
-                    onPress={() => navigation.push('DetailKamar')}
+                    onPress={() => navigation.push(cardNavigation)}
                   />
                 ))}
                 <Gap width={10} />

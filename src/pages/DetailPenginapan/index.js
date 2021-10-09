@@ -21,6 +21,7 @@ export default function index({navigation}) {
   return (
     <Detail
       isLodgingDetail
+      cardNavigation="DetailKamar"
       navigation={navigation}
       image={IMGPenginapan1}
       titleSection="Villa Samata"

@@ -12,10 +12,12 @@ export default function index({
   isLodgingDetail,
   roomsData,
   isRoomDetail,
+  cardNavigation,
 }) {
   if (isLodgingDetail) {
     return (
       <LodgingDetail
+        cardNavigation={cardNavigation}
         navigation={navigation}
         image={image}
         titleSection={titleSection}

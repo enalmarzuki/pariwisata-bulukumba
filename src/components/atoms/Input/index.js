@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {colors} from '../../../utils';
 import InputDate from './InputDate';
+import InputTime from './InputTime';
 
 export default function Input({
   type,
@@ -17,6 +18,16 @@ export default function Input({
   if (type === 'date') {
     return (
       <InputDate
+        onChangeText={onChangeText}
+        label={label}
+        value={value}
+        // onFocus={onFocus}
+      />
+    );
+  }
+  if (type === 'timePicker') {
+    return (
+      <InputTime
         onChangeText={onChangeText}
         label={label}
         value={value}
