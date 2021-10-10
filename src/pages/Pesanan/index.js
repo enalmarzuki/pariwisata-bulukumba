@@ -1,8 +1,13 @@
-import React from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, {useState, useRef} from 'react';
 import {StyleSheet, Text, Touchable, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import PagerView from 'react-native-pager-view';
 
 const index = () => {
+  const [initialPage, setInitialPage] = useState(0);
+  const ref = useRef();
+
   return (
     <View style={styles.container}>
       <View style={styles.headerWrapper}>
@@ -10,15 +15,35 @@ const index = () => {
         <Text>Wulandari</Text>
 
         <View style={styles.menuWrapper}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            style=""
+            onPress={() => {
+              setInitialPage(0);
+              ref.current.setPage(0);
+            }}>
             <Text>Pesanan</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setInitialPage(1);
+              ref.current.setPage(1);
+            }}>
             <Text>Kelola Kamar</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <Text>asdsa</Text>
+      <PagerView
+        style={styles.pagerView}
+        initialPage={initialPage}
+        ref={ref}
+        onPageSelected={e => setInitialPage(e.nativeEvent.position)}>
+        <View key="1">
+          <Text>First page</Text>
+        </View>
+        <View key="2">
+          <Text>Second page</Text>
+        </View>
+      </PagerView>
     </View>
   );
 };
@@ -43,5 +68,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 43,
+  },
+  pagerView: {
+    flex: 1,
   },
 });
