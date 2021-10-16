@@ -14,7 +14,10 @@ export default function CardMostVisitor({
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.cardWrapper}>
         <View style={styles.cardImage}>
-          <Image source={image} style={styles.cardImage} />
+          <Image
+            source={{uri: `https://skripsi-wulan.herokuapp.com/image/${image}`}}
+            style={styles.cardImage}
+          />
         </View>
         <View style={styles.cardBody}>
           <View>
@@ -23,7 +26,6 @@ export default function CardMostVisitor({
           </View>
           <View style={styles.cardRating}>
             <Text style={styles.rating}>{rating}</Text>
-            <ICStart />
           </View>
         </View>
       </View>

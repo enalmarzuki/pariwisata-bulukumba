@@ -43,12 +43,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingVertical: 14,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
   title: {
     fontFamily: fonts.primary[800],
     fontSize: 20,
     color: colors.text.primary,
+    textAlign: 'center',
+    flex: 1,
   },
 });

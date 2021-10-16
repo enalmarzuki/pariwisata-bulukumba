@@ -1,12 +1,15 @@
 import React from 'react';
 import {
   Image,
+  Linking,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {ICAc, ICKulkas, ICMaps, ICTv, ICWifi} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 import {Gap} from '../../atoms';
@@ -20,7 +23,16 @@ export default function index({
   description,
   roomsData,
   cardNavigation,
+  data,
 }) {
+  console.log('data', data);
+
+  const handleClickOpenMaps = () => {
+    const daddr = `${data.latitude},${data.longitude}`;
+    const company = Platform.OS === 'ios' ? 'apple' : 'google';
+    Linking.openURL(`http://maps.${company}.com/maps?daddr=${daddr}`);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -30,52 +42,44 @@ export default function index({
           onPress={() => navigation.goBack()}
         />
         <View style={styles.imageWrapper}>
-          <Image source={image} style={styles.image} />
+          <Image
+            source={{
+              uri: `https://skripsi-wulan.herokuapp.com/image/${data.foto}`,
+            }}
+            style={styles.image}
+          />
         </View>
         <View style={styles.sectionWrapper}>
           <View style={styles.titleWrapper}>
             <View>
-              <Text style={styles.title}>{titleSection}</Text>
-              <Text style={styles.subTitle}>{subTitleSection}</Text>
+              <Text style={styles.title}>{data.nama}</Text>
+              <Text style={styles.subTitle}>{data.lokasi}</Text>
             </View>
-            <ICMaps />
+            <TouchableOpacity onPress={handleClickOpenMaps}>
+              <ICMaps />
+            </TouchableOpacity>
           </View>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>{data.deskripsi}</Text>
           <Gap height={25} />
           <View>
-            <SectionTitle title="Fasilitas" />
-            <View style={styles.facilityWrapper}>
-              <View style={styles.facility}>
-                <ICWifi />
-                <Text style={styles.facilityDesc}>Wi-Fi</Text>
-              </View>
-              <View style={styles.facility}>
-                <ICTv />
-                <Text style={styles.facilityDesc}>Televisi</Text>
-              </View>
-              <View style={styles.facility}>
-                <ICAc />
-                <Text style={styles.facilityDesc}>AC</Text>
-              </View>
-              <View style={styles.facility}>
-                <ICKulkas />
-                <Text style={styles.facilityDesc}>Kulkas</Text>
-              </View>
-            </View>
-            <Gap height={25} />
             <SectionTitle title="Tipe Kamar" />
             <Gap height={25} />
             <View style={styles.RoomsType}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <Gap width={30} />
-                {roomsData?.map(room => (
+                {data.kamar?.map(room => (
                   <Card
-                    key={room.id}
+                    key={room._id}
                     isRoomType
-                    image={room.image}
-                    title={room.title}
-                    subTitle={room.subTitle}
-                    onPress={() => navigation.push(cardNavigation)}
+                    // image={room.image}
+                    // title={room.title}
+                    // subTitle={room.subTitle}
+                    data={room}
+                    onPress={() =>
+                      navigation.push(cardNavigation, {
+                        idKamar: room._id,
+                      })
+                    }
                   />
                 ))}
                 <Gap width={10} />

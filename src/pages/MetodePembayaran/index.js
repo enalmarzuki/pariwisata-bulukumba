@@ -37,15 +37,15 @@ export default function index({navigation}) {
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.btnAction('secondary')}
-          onPress={() => console.log('Ke Home')}>
+          onPress={() => navigation.replace('MainApp')}>
           <Text style={styles.btnText('secondary')}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={0.7}
           style={styles.btnAction()}
           onPress={() => navigation.push('KonfirmasiPembayaran')}>
           <Text style={styles.btnText()}>Konfirmasi</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );

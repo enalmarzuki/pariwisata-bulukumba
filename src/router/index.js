@@ -23,6 +23,8 @@ import {
   Agenda,
   Pesanan,
   KelolaKamar,
+  DetailPesanan,
+  ListPesanan,
 } from '../pages';
 import {BottomNavigator, TopNavigatior} from '../components';
 import Tambah from '../components/organism/Modal/Agenda/Tambah';
@@ -55,7 +57,7 @@ const MainApp = () => {
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="AdminPesanan">
+    <Stack.Navigator initialRouteName="GetStarted">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -74,6 +76,13 @@ const Router = () => {
         }}
       />
       <Stack.Screen
+        name="AdminDetailPesanan"
+        component={DetailPesanan}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="MainApp"
         component={MainApp}
         options={{headerShown: false}}
@@ -81,6 +90,11 @@ const Router = () => {
       <Stack.Screen
         name="Penginapan"
         component={Penginapan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ListPesanan"
+        component={ListPesanan}
         options={{headerShown: false}}
       />
       <Stack.Screen

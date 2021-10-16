@@ -1,17 +1,33 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors, fonts} from '../../../utils';
+import NumberFormat from 'react-number-format';
 
-export default function CardRoomType({onPress, image, title, subTitle}) {
+export default function CardRoomType({onPress, image, title, subTitle, data}) {
+  console.log('data asdas', data);
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.cardWrapper}>
         <View style={styles.cardImageWrapper}>
-          <Image source={image} style={styles.cardImage} />
+          <Image
+            source={{
+              uri: `https://skripsi-wulan.herokuapp.com/image/${data.foto}`,
+            }}
+            style={styles.cardImage}
+          />
         </View>
         <View style={styles.cardBody}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subTitle}>{subTitle}</Text>
+          <Text style={styles.title}>{data.tipe}</Text>
+          <Text style={styles.subTitle}>
+            <NumberFormat
+              value={data.harga}
+              displayType={'text'}
+              thousandSeparator="."
+              decimalSeparator=","
+              prefix={'Rp. '}
+              renderText={value => <Text>{value}</Text>}
+            />
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

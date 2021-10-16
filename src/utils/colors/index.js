@@ -18,6 +18,7 @@ const mainColors = {
   black1: '#000000',
   black2: '#2B2B2B',
   black3: '#8A8A8A',
+  black4: 'rgba(0,0,0,0.5)',
   red1: '#e06379',
 };
 
@@ -50,7 +51,7 @@ export const colors = {
     bgBtnBack: mainColors.gray5,
   },
   border: mainColors.gray7,
-  loadingBackground: mainColors.black2,
+  loadingBackground: mainColors.black4,
   textInputUnderline: mainColors.black2,
   totalBackground: mainColors.gray6,
   error: mainColors.red1,

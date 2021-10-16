@@ -1,6 +1,11 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
 import {IMGKamar1, IMGKamar2, IMGPenginapan1} from '../../assets';
 import {Detail} from '../../components';
+import {actionGetDetailPenginapan} from '../../redux/action/penginapan';
+import {colors} from '../../utils';
 
 const rooms = [
   {
@@ -17,17 +22,55 @@ const rooms = [
   },
 ];
 
-export default function index({navigation}) {
+export default function DetailPenginapan({route, navigation}) {
+  console.log('route', route);
+
+  const detailPenginapan = useSelector(
+    state => state.penginapan.dataDetailPenginapan,
+  );
+  const penginapan = useSelector(state => state.penginapan);
+  const dispatch = useDispatch();
+
+  const getDetailPenginapan = useCallback(async () => {
+    return dispatch(actionGetDetailPenginapan(route.params.id));
+  }, [dispatch, route.params.id]);
+
+  useEffect(() => {
+    getDetailPenginapan();
+  }, [getDetailPenginapan]);
+
+  if (penginapan.isLoading) {
+    return (
+      <View style={styles.emptyList}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <Detail
       isLodgingDetail
       cardNavigation="DetailKamar"
       navigation={navigation}
-      image={IMGPenginapan1}
-      titleSection="Villa Samata"
-      subTitleSection="Pantai Bira, Kel. Bira"
-      description="Villa yang berdiri sejak tahun 2002, menawarkan fasiltias yang sangat lengkap dan langsung menghadap ke pantai. Telah banyak artis dan pejabat yang mempercayai villa kami ketika mereka sedang liburan ke bulukumba."
-      roomsData={rooms}
+      data={detailPenginapan}
+      // image={IMGPenginapan1}
+      // titleSection={detailPenginapan.nama}
+      // subTitleSection={detailPenginapan.lokasi}
+      // description={detailPenginapan.deskripsi}
+      // roomsData={rooms}
     />
   );
 }
+
+const styles = StyleSheet.create({
+  emptyList: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageEmptyLodging: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
+  },
+});

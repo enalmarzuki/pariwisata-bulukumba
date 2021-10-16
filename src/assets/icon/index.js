@@ -15,8 +15,10 @@ import ICKuliner from './ic-kuliner.svg';
 import ICCalendarGreen from './ic-calendar-green.svg';
 import ICLocationGreen from './ic-location-green.svg';
 import ICPlus from './ic-plus.svg';
+import ICBook from './ic-book.svg';
 
 export {
+  ICBook,
   ICPlus,
   ICCalendarGreen,
   ICLocationGreen,

@@ -27,7 +27,12 @@ export default function CardRecommendation({onPress, image, title, subTitle}) {
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.cardWrapper(orientation)}>
         <View style={styles.cardImage}>
-          <Image source={image} style={styles.cardImage} />
+          <Image
+            source={{
+              uri: `https://skripsi-wulan.herokuapp.com/image/${image}`,
+            }}
+            style={styles.cardImage}
+          />
         </View>
         <View style={styles.cardTitleWrapper}>
           <View style={styles.cardBody}>

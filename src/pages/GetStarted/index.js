@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useD} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -8,12 +8,37 @@ import {
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {ICClose, IMGGetStarted} from '../../assets';
-import {Button, Gap, Link} from '../../components';
+import {Button, Gap, Link, Loading} from '../../components';
 import {fonts} from '../../utils';
+import {actionLogin} from '../../redux/action/auth';
+import {useDispatch, useSelector} from 'react-redux';
 
 const GetStarted = ({navigation}) => {
   const [formLogin, setFormLogin] = useState(false);
   const [formRegister, setFormRegister] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.auth.isLoading);
+  console.log('isLoading', isLoading);
+
+  const handleClickLogin = async () => {
+    const data = {
+      email: email.toLowerCase(),
+      password,
+    };
+
+    const response = await dispatch(actionLogin(data));
+
+    if (response?.diagnostic?.status === 200) {
+      if (response?.result.level === 'user') {
+        return navigation.replace('MainApp');
+      }
+      return navigation.replace('AdminPesanan');
+    }
+
+    console.log('responseHalaman Login', response);
+  };
 
   if (formLogin) {
     return (
@@ -29,6 +54,7 @@ const GetStarted = ({navigation}) => {
           <Gap height={24} />
 
           <TextInput
+            value={email}
             label="Email"
             style={styles.inputFormLogin}
             underlineColor={'#000'}
@@ -40,11 +66,14 @@ const GetStarted = ({navigation}) => {
                 placeholder: '#000',
               },
             }}
+            onChangeText={value => setEmail(value)}
           />
 
           <Gap height={16} />
 
           <TextInput
+            value={password}
+            onChangeText={value => setPassword(value)}
             label="Kata Sandi"
             secureTextEntry={true}
             underlineColor={'#000'}
@@ -61,7 +90,11 @@ const GetStarted = ({navigation}) => {
 
           <Gap height={30} />
 
-          <Button title="Masuk" onPress={() => setFormLogin(true)} />
+          <Button
+            disable={!isLoading}
+            title="Masuk"
+            onPress={handleClickLogin}
+          />
 
           <View style={styles.wrapperShowRegistrasi}>
             <Text>Belum Punya Akun ? </Text>
@@ -76,6 +109,7 @@ const GetStarted = ({navigation}) => {
             />
           </View>
         </View>
+        {isLoading && <Loading />}
       </ImageBackground>
     );
   }

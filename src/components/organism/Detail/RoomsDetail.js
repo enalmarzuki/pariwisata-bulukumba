@@ -1,6 +1,6 @@
 import moment from 'moment';
 // import 'moment/locale/id';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -14,22 +14,44 @@ import {showMessage} from 'react-native-flash-message';
 import {ICAc, ICKulkas, ICMaps, ICTv, ICWifi} from '../../../assets';
 import {colors, fonts, useForm} from '../../../utils';
 import {Gap, Input} from '../../atoms';
-import {Header, SectionTitle} from '../../molecules';
+import {Header, SectionTitle, Loading} from '../../molecules';
+import NumberFormat from 'react-number-format';
+import {useDispatch, useSelector} from 'react-redux';
+import {actionBookingRoom} from '../../../redux/action/kamar';
 
-export default function RoomsDetail({navigation, image}) {
+const icon = type => {
+  if (type.toLowerCase() === 'kulkas') {
+    return <ICKulkas />;
+  } else if (type.toLowerCase() === 'ac') {
+    return <ICAc />;
+  }
+  return <ICWifi />;
+};
+
+export default function RoomsDetail({navigation, data}) {
+  const user = useSelector(state => state.auth.dataUser);
+  const isLoadingBooking = useSelector(state => state.kamar.isLoading);
+  const [total, setTotal] = useState(0);
   const [form, setForm] = useForm({
+    id_kamar: data._id,
+    harga: data.harga,
+    id_pemesan: user.id,
     namaLengap: '',
     noHp: '',
-    tglMasuk: '',
-    tglKeluar: '',
+    masuk: '',
+    keluar: '',
   });
+  const dispatch = useDispatch();
+
+  console.log('total', total);
 
   const updateData = (e, target) => {
     const date = moment(e).format('DD MMMM YYYY');
 
-    if (target === 'tglKeluar') {
-      const checkInDate = moment(new Date(form.tglMasuk)).format('x');
+    if (target === 'keluar') {
+      const checkInDate = moment(new Date(form.masuk)).format('x');
       const checkOutDate = moment(e).format('x');
+
       if (checkOutDate < checkInDate) {
         return showMessage({
           message: 'Ooops! Ada yang salah dari tanggal keluar anda',
@@ -38,6 +60,13 @@ export default function RoomsDetail({navigation, image}) {
           color: colors.white,
         });
       } else {
+        const checkIn = moment(new Date(form.masuk));
+        const checkOut = moment(e);
+
+        const difference = checkOut.diff(checkIn, 'days');
+        const totalBooking = form.harga * difference;
+
+        setTotal(totalBooking);
         return setForm(target, date);
       }
     } else {
@@ -54,7 +83,24 @@ export default function RoomsDetail({navigation, image}) {
   //   return result;
   // };
 
-  console.log(form);
+  const handleClickBooking = async () => {
+    const dataBooking = {
+      id_kamar: data._id,
+      harga: data.harga,
+      id_pemesan: user.id,
+      masuk: moment(form.masuk, 'DD MMMM YYYY').format('DD-MM-YYYY'),
+      keluar: moment(form.keluar, 'DD MMMM YYYY').format('DD-MM-YYYY'),
+      total: total,
+    };
+
+    console.log('dataBooking', dataBooking);
+
+    const response = await dispatch(actionBookingRoom(dataBooking));
+    console.log('response', response);
+    if (response.success) {
+      return navigation.replace('MetodePembayaran');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,35 +111,40 @@ export default function RoomsDetail({navigation, image}) {
           onPress={() => navigation.goBack()}
         />
         <View style={styles.imageWrapper}>
-          <Image source={image} style={styles.image} />
+          <Image
+            source={{
+              uri: `https://skripsi-wulan.herokuapp.com/image/${data.foto}`,
+            }}
+            style={styles.image}
+          />
         </View>
         <View style={styles.sectionWrapper}>
           <View style={styles.titleWrapper}>
             <View>
-              <Text style={styles.title}>Kamar Reguler</Text>
-              <Text style={styles.subTitle}>Rp. 180.000 / Malam</Text>
+              <Text style={styles.title}>{data.tipe}</Text>
+              <Text style={styles.subTitle}>
+                <NumberFormat
+                  value={data.harga}
+                  displayType={'text'}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix="Rp. "
+                  suffix=" / Malam"
+                  renderText={value => <Text>{value}</Text>}
+                />
+              </Text>
             </View>
-            <ICMaps />
           </View>
           <View>
             <SectionTitle title="Fasilitas" />
+
             <View style={styles.facilityWrapper}>
-              <View style={styles.facility}>
-                <ICWifi />
-                <Text style={styles.facilityDesc}>Wi-Fi</Text>
-              </View>
-              <View style={styles.facility}>
-                <ICTv />
-                <Text style={styles.facilityDesc}>Televisi</Text>
-              </View>
-              <View style={styles.facility}>
-                <ICAc />
-                <Text style={styles.facilityDesc}>AC</Text>
-              </View>
-              <View style={styles.facility}>
-                <ICKulkas />
-                <Text style={styles.facilityDesc}>Kulkas</Text>
-              </View>
+              {data.fasilitas?.map((item, index) => (
+                <View style={styles.facility} key={index}>
+                  {icon(item)}
+                  <Text style={styles.facilityDesc}>{item}</Text>
+                </View>
+              ))}
             </View>
           </View>
           <Gap height={25} />
@@ -116,15 +167,15 @@ export default function RoomsDetail({navigation, image}) {
               <Input
                 type="date"
                 label="Tanggal Masuk"
-                value={form.tglMasuk}
-                onChangeText={e => updateData(e, 'tglMasuk')}
+                value={form.masuk}
+                onChangeText={e => updateData(e, 'masuk')}
               />
               <Gap width={25} />
               <Input
                 type="date"
                 label="Tanggal Keluar"
-                value={form.tglKeluar}
-                onChangeText={e => updateData(e, 'tglKeluar')}
+                value={form.keluar}
+                onChangeText={e => updateData(e, 'keluar')}
               />
             </View>
             {/* <Text>{`Anda akan menginap ${howLongToStay(
@@ -138,15 +189,25 @@ export default function RoomsDetail({navigation, image}) {
       <View style={styles.totalWrapper}>
         <View style={styles.totalDesc}>
           <Text style={styles.totalTitle}>Total Harga</Text>
-          <Text style={styles.total}>Rp. 660.000</Text>
+          <Text style={styles.total}>
+            <NumberFormat
+              value={total}
+              displayType={'text'}
+              thousandSeparator="."
+              decimalSeparator=","
+              prefix={'Rp. '}
+              renderText={value => <Text>{value}</Text>}
+            />
+          </Text>
         </View>
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.btnBayar}
-          onPress={() => navigation.push('MetodePembayaran')}>
-          <Text style={styles.textBtn}>Bayar</Text>
+          onPress={handleClickBooking}>
+          <Text style={styles.textBtn}>Booking</Text>
         </TouchableOpacity>
       </View>
+      {isLoadingBooking && <Loading />}
     </SafeAreaView>
   );
 }
@@ -201,17 +262,19 @@ const styles = StyleSheet.create({
   },
   facilityWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     marginTop: 15,
   },
   facility: {
     alignItems: 'center',
+    marginRight: 35,
   },
   facilityDesc: {
     fontFamily: fonts.primary[700],
     fontSize: 14,
     color: colors.text.subTitle,
     marginTop: 14,
+    textTransform: 'capitalize',
   },
   inputDateWrapper: {
     flexDirection: 'row',

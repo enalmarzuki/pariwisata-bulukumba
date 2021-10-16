@@ -15,12 +15,16 @@ import ProsesPembayaran from './ProsesPembayaran';
 import Home from './Home';
 import Agenda from './Agenda';
 import Pesanan from './Pesanan';
+import DetailPesanan from './DetailPesanan';
 import KelolaKamar from './KelolaKamar';
+import ListPesanan from './ListPesanan';
 
 export {
+  ListPesanan,
   SplashScreen,
   Home,
   Pesanan,
+  DetailPesanan,
   KelolaKamar,
   Agenda,
   GetStarted,

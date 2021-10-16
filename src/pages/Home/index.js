@@ -10,11 +10,16 @@ import {
   ICWisata,
   IMGBGHome,
   IMGDummyProfile,
+  ICBook,
 } from '../../assets';
 import {Gap} from '../../components/atoms';
 import {fonts} from '../../utils';
+import {useSelector} from 'react-redux';
 
 const Home = ({navigation}) => {
+  const user = useSelector(state => state.auth);
+  console.log('dataUser', user);
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -24,7 +29,7 @@ const Home = ({navigation}) => {
             <View style={styles.profileWrapper}>
               <Image source={IMGDummyProfile} style={styles.imgProfile} />
             </View>
-            <Text style={styles.name}>Joanna Alexa</Text>
+            <Text style={styles.name}>{user.dataUser.nama || 'Anonym'}</Text>
             <Text style={styles.job}>Web Desainer</Text>
           </View>
         </View>
@@ -37,6 +42,15 @@ const Home = ({navigation}) => {
               onPress={() => navigation.push('Penginapan')}>
               <ICHome />
               <Text style={styles.textMenu}>Penginapan</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.btnMenutes}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.btnMenu}
+              onPress={() => navigation.push('ListPesanan')}>
+              <ICBook />
+              <Text style={styles.textMenu}>Pesanan</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.btnMenutes}>

@@ -13,12 +13,14 @@ export default function index({
   roomsData,
   isRoomDetail,
   cardNavigation,
+  data,
 }) {
   if (isLodgingDetail) {
     return (
       <LodgingDetail
         cardNavigation={cardNavigation}
         navigation={navigation}
+        data={data}
         image={image}
         titleSection={titleSection}
         subTitleSection={subTitleSection}
@@ -29,7 +31,7 @@ export default function index({
   }
 
   if (isRoomDetail) {
-    return <RoomsDetail navigation={navigation} image={image} />;
+    return <RoomsDetail navigation={navigation} data={data} />;
   }
 
   return (
