@@ -44,6 +44,7 @@ export default function RoomsDetail({navigation, data}) {
   const dispatch = useDispatch();
 
   console.log('total', total);
+  console.log('form', form);
 
   const updateData = (e, target) => {
     const date = moment(e).format('DD MMMM YYYY');
@@ -62,6 +63,8 @@ export default function RoomsDetail({navigation, data}) {
       } else {
         const checkIn = moment(new Date(form.masuk));
         const checkOut = moment(e);
+
+        console.log('difference', difference);
 
         const difference = checkOut.diff(checkIn, 'days');
         const totalBooking = form.harga * difference;

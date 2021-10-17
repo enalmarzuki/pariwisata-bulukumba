@@ -39,7 +39,7 @@ export default function DetailPenginapan({route, navigation}) {
     getDetailPenginapan();
   }, [getDetailPenginapan]);
 
-  if (penginapan.isLoading) {
+  if (penginapan.isLoading || detailPenginapan === '') {
     return (
       <View style={styles.emptyList}>
         <ActivityIndicator size="large" color={colors.primary} />
@@ -53,11 +53,6 @@ export default function DetailPenginapan({route, navigation}) {
       cardNavigation="DetailKamar"
       navigation={navigation}
       data={detailPenginapan}
-      // image={IMGPenginapan1}
-      // titleSection={detailPenginapan.nama}
-      // subTitleSection={detailPenginapan.lokasi}
-      // description={detailPenginapan.deskripsi}
-      // roomsData={rooms}
     />
   );
 }

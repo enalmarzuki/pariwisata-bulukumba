@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-shadow */
 import moment from 'moment';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {
   Button,
@@ -12,35 +13,28 @@ import {
 } from 'react-native-paper';
 import {Gap, Input} from '../../..';
 import {fonts, useForm} from '../../../../utils';
-import DropDown from 'react-native-paper-dropdown';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {actionGetDestination} from '../../../../redux/action/destinasi';
+import {useDispatch, useSelector} from 'react-redux';
+import axios from 'axios';
 
-const genderList = [
-  {
-    label: 'Male',
-    value: 'male',
-  },
-  {
-    label: 'Female',
-    value: 'female',
-  },
-  {
-    label: 'Others',
-    value: 'others',
-  },
-];
+DropDownPicker.setListMode('SCROLLVIEW');
 
 const Tambah = ({navigation}) => {
   const [visible, setVisible] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([]);
   const [form, setForm] = useForm({
-    tglMasuk: '',
+    tanggal: '',
     jam: '',
-    destinasi: 'Wisata',
-    tujuan: '',
+    tipe_lokasi: 'Wisata',
+    id_lokasi: value,
   });
-  const [showDropDown, setShowDropDown] = useState(false);
 
-  console.log('form', form);
+  const dispatch = useDispatch();
+  const destinationList = useSelector(state => state.destinasi);
 
   const hideDialog = () => {
     navigation.goBack();
@@ -48,14 +42,44 @@ const Tambah = ({navigation}) => {
   };
 
   const updateData = (e, target) => {
-    const date = moment(e).format('DD MMMM YYYY');
-
+    const date = moment(e).format('DD-MM-YYYY');
     return setForm(target, date);
   };
 
-  const handleChangeDropdown = value => {
-    return setForm('tujuan', value);
+  const getDestinations = useCallback(async () => {
+    return await dispatch(actionGetDestination());
+  }, [dispatch]);
+
+  const handleDestinationChange = value => {
+    const tempListTujuan = destinationList.dataDestinations[value];
+    const dataListTujuan = tempListTujuan.map(item => ({
+      label: item.nama,
+      value: item._id,
+    }));
+    setItems(dataListTujuan);
+    return setForm('tipe_lokasi', value);
   };
+
+  const handleListChange = callback => {
+    return setForm('id_lokasi', callback(items));
+  };
+
+  const handleClickAddAgenda = () => {
+    axios
+      .post('https://skripsi-wulan.herokuapp.com/agenda', form)
+      .then(res => {
+        console.log('res', res);
+        navigation.goBack();
+        return setVisible(false);
+      })
+      .catch(err => console.log('err', err));
+  };
+
+  useEffect(() => {
+    getDestinations();
+  }, [getDestinations]);
+
+  console.log('form', form);
 
   return (
     <Dialog style={styles.modal} visible={visible} onDismiss={hideDialog}>
@@ -65,8 +89,8 @@ const Tambah = ({navigation}) => {
           <Input
             type="date"
             label="Tanggal Masuk"
-            value={form.tglMasuk}
-            onChangeText={e => updateData(e, 'tglMasuk')}
+            value={form.tanggal}
+            onChangeText={e => updateData(e, 'tanggal')}
           />
           <Gap height={20} />
           <Input
@@ -80,55 +104,45 @@ const Tambah = ({navigation}) => {
           <View>
             <Text>Destinasi</Text>
             <RadioButton.Group
-              onValueChange={value => setForm('destinasi', value)}
-              value={form.destinasi}>
+              onValueChange={value => handleDestinationChange(value)}
+              value={form.tipe_lokasi}>
               <RadioButton.Item label="Wisata" value="Wisata" />
               <RadioButton.Item label="Kuliner" value="Kuliner" />
-              <RadioButton.Item label="Oleh - Oleh" value="Oleh - Oleh" />
+              <RadioButton.Item label="Oleh - Oleh" value="Toko" />
             </RadioButton.Group>
           </View>
           <Gap height={20} />
-          <Input
+          {/* <Input
             data={form.tujuan}
             label="Tujuan"
             value={form.tujuan}
             onChangeText={value => setForm('tujuan', value)}
           />
+          <Gap height={30} /> */}
+          <DropDownPicker
+            open={open}
+            value={form.id_lokasi}
+            items={items}
+            setOpen={setOpen}
+            setValue={handleListChange}
+            setItems={setItems}
+            placeholder="Tujuan"
+            style={{
+              borderWidth: 0,
+              borderBottomWidth: 1,
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: '#dfdfdf',
+              borderWidth: 0,
+            }}
+          />
           <Gap height={30} />
 
           <TouchableOpacity
             style={styles.btnTambah}
-            onPress={() => {
-              navigation.goBack();
-              return setVisible(false);
-            }}>
+            onPress={handleClickAddAgenda}>
             <Text style={styles.btnText}>Tambah</Text>
           </TouchableOpacity>
-
-          {/* <DropDown
-            label={'Tujuan'}
-            mode={'flat'}
-            visible={showDropDown}
-            showDropDown={() => setShowDropDown(true)}
-            onDismiss={() => setShowDropDown(false)}
-            value={form.tujuan}
-            setValue={value => handleChangeDropdown(value)}
-            list={genderList}
-            inputProps={{
-              style: {
-                paddingHorizontal: 0,
-              },
-              right: <Text />,
-            }}
-            theme={{
-              colors: {
-                background: 'transparent',
-                primary: '#7DE1C9',
-                text: '#000',
-                placeholder: form.tujuan ? '#7DE1C9' : '#000',
-              },
-            }}
-          /> */}
         </ScrollView>
       </Dialog.ScrollArea>
     </Dialog>

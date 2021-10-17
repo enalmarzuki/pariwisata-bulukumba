@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {SectionTitle, Input, Gap} from '../../components';
+import {SectionTitle, Input, Gap, Loading} from '../../components';
 import {colors, fonts, useForm} from '../../utils';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
@@ -23,12 +24,13 @@ import NumberFormat from 'react-number-format';
 export default function KonfirmasiPembayaran({route, navigation}) {
   const dispatch = useDispatch();
   const detailPesanan = useSelector(state => state.pesananUser.detailPesanan);
+  const isLoading = useSelector(state => state.pesananUser.isLoading);
   const roomData = useSelector(state => state.kamar.dataKamar);
   const penginapan = useSelector(
     state => state.penginapan.dataDetailPenginapan,
   );
 
-  // console.log('detailPesanan', detailPesanan);
+  // console.log('isLoading', isLoading);
   // console.log('roomData', roomData);
   // console.log('penginapan', penginapan);
   const [form, setForm] = useForm({
@@ -51,7 +53,7 @@ export default function KonfirmasiPembayaran({route, navigation}) {
             color: colors.white,
           });
         } else {
-          // console.log('response', response);
+          console.log('response', response.data);
           setForm('foto', response?.assets[0]);
         }
       },
@@ -59,24 +61,14 @@ export default function KonfirmasiPembayaran({route, navigation}) {
   };
 
   const handleClickConfirmPayment = async () => {
-    console.log(form);
-    console.log(detailPesanan);
-
-    // const newData = FormData();
-    // newData.append('nama', form.nama);
-    // newData.append('bank', form.bank);
-    // newData.append('norek', form.norek);
-    // newData.append('foto', {
-    //   uri: form.foto.uri,
-    //   name: form.foto.fileName,
-    //   type: form.foto.type,
-    // });
-
     const response = await dispatch(
       actionUploadPayment(detailPesanan._id, form),
     );
     console.log('response', response);
-    // navigation.push('ProsesPembayaran')
+
+    if (response.diagnostic.message === 'Berhasil Mengperbaharui data') {
+      return navigation.push('ProsesPembayaran');
+    }
   };
 
   const getDetailPesananUser = useCallback(async () => {
@@ -170,6 +162,7 @@ export default function KonfirmasiPembayaran({route, navigation}) {
         onPress={handleClickConfirmPayment}>
         <Text style={styles.btnTitle}>Konfirmasi</Text>
       </TouchableOpacity>
+      {isLoading && <Loading />}
     </SafeAreaView>
   );
 }

@@ -1,49 +1,49 @@
 import {
-  PANGINAPAN_START,
-  PANGINAPAN_SUCCESS,
-  PANGINAPAN_FAIL,
-  PANGINAPAN_DETAIL_START,
-  PANGINAPAN_DETAIL_SUCCESS,
-  PANGINAPAN_DETAIL_FAIL,
+  WISATA_START,
+  WISATA_SUCCESS,
+  WISATA_FAIL,
+  WISATA_DETAIL_START,
+  WISATA_DETAIL_SUCCESS,
+  WISATA_DETAIL_FAIL,
 } from '../type';
 
 const initialState = {
   isLoading: false,
-  dataPenginapan: '',
-  dataDetailPenginapan: '',
+  dataWisata: [],
+  dataDetailWisata: '',
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case PANGINAPAN_START:
+    case WISATA_START:
       return {
         ...state,
         isLoading: true,
       };
-    case PANGINAPAN_SUCCESS:
+    case WISATA_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        dataPenginapan: action.value,
+        dataWisata: action.value,
       };
-    case PANGINAPAN_FAIL:
+    case WISATA_FAIL:
       return {
         ...state,
         isLoading: false,
       };
 
-    case PANGINAPAN_DETAIL_START:
+    case WISATA_DETAIL_START:
       return {
         ...state,
         isLoading: true,
       };
-    case PANGINAPAN_DETAIL_SUCCESS:
+    case WISATA_DETAIL_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        dataDetailPenginapan: action.value,
+        dataDetailWisata: action.value,
       };
-    case PANGINAPAN_DETAIL_FAIL:
+    case WISATA_DETAIL_FAIL:
       return {
         ...state,
         isLoading: false,

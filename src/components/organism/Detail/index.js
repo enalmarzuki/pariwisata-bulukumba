@@ -1,9 +1,26 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  Linking,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {Card, Gap, Header, SectionTitle} from '../..';
+import {ICMaps} from '../../../assets';
+import {actionGetDetail} from '../../../redux/action/detail';
+import {colors, fonts} from '../../../utils';
 import LodgingDetail from './LodgingDetail';
 import RoomsDetail from './RoomsDetail';
+import DetailPage from './Detail';
 
-export default function index({
+export default function Detail({
   navigation,
   image,
   titleSection,
@@ -14,6 +31,8 @@ export default function index({
   isRoomDetail,
   cardNavigation,
   data,
+  urlDetail,
+  isDetail,
 }) {
   if (isLodgingDetail) {
     return (
@@ -34,9 +53,20 @@ export default function index({
     return <RoomsDetail navigation={navigation} data={data} />;
   }
 
+  if (isDetail) {
+    return (
+      <DetailPage
+        cardNavigation={cardNavigation}
+        navigation={navigation}
+        data={data}
+        urlDetail={urlDetail}
+      />
+    );
+  }
+
   return (
     <View>
-      <Text>Organism not available</Text>
+      <Text>Detail Page Is Not Available</Text>
     </View>
   );
 }

@@ -33,7 +33,7 @@ export default function Penginapan({navigation}) {
     getPenginapan();
   }, [getPenginapan]);
 
-  if (penginapanList.isLoading) {
+  if (penginapanList.isLoading || penginapanList.dataPenginapan === '') {
     return (
       <View style={styles.emptyList}>
         <ActivityIndicator size="large" color={colors.primary} />

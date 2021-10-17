@@ -1,16 +1,41 @@
-import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
 import {
-  IMGDummyProfile,
-  IMGPenginapan1,
-  IMGPenginapan2,
-  IMGWisata1,
-  IMGWisata2,
-} from '../../assets';
+  ActivityIndicator,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {IMGDummyProfile, IMGEmptyLodging} from '../../assets';
 import {Card, Gap, Header, SectionTitle} from '../../components';
+import {actionGetWisata} from '../../redux/action/wisata';
 import {colors} from '../../utils';
 
-export default function index({navigation}) {
+export default function Wisata({navigation}) {
+  const wisataList = useSelector(state => state.wisata);
+  const dispatch = useDispatch();
+
+  console.log('wisataList', wisataList);
+
+  const getWisata = useCallback(async () => {
+    return dispatch(actionGetWisata());
+  }, [dispatch]);
+
+  useEffect(() => {
+    getWisata();
+  }, [getWisata]);
+
+  if (wisataList.isLoading) {
+    return (
+      <View style={styles.emptyList}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -20,87 +45,57 @@ export default function index({navigation}) {
         image={IMGDummyProfile}
         onPress={() => navigation.goBack()}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.wrapper}>
-          <Gap height={30} />
-          <SectionTitle
-            withSeeAll
-            title="Rekomendasi Penginapan"
-            subTitle="Lihat Semua"
-            onPress={() => console.log('lihat semua')}
-          />
-          <Gap height={20} />
+
+      {wisataList.dataWisata.length === 0 ? (
+        <View style={styles.emptyList}>
+          <Image source={IMGEmptyLodging} style={styles.imageEmptyLodging} />
+          <Text>Oopss! Penginapan tidak tersedia </Text>
         </View>
-        <View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Gap width={30} />
-            <Card
-              isRecommendation
-              image={IMGWisata1}
-              title="Pantai Bira"
-              subTitle="Pantai Bira, Kel. Bira"
-              onPress={() => navigation.push('DetailWisata')}
-            />
-            <Card
-              isRecommendation
-              image={IMGPenginapan1}
-              title="Villa Samata"
-              subTitle="Pantai Bira, Kel. Bira"
-              onPress={() => navigation.push('DetailWisata')}
-            />
-            <Card
-              isRecommendation
-              image={IMGPenginapan1}
-              title="Villa Samata"
-              subTitle="Pantai Bira, Kel. Bira"
-              onPress={() => navigation.push('DetailWisata')}
-            />
-            <Gap width={10} />
-          </ScrollView>
-        </View>
-        <Gap height={35} />
-        <View style={styles.wrapper}>
-          <SectionTitle
-            withSeeAll
-            title="Pengunjung Terbanyak"
-            subTitle="Lihat Semua"
-            onPress={() => console.log('Pengunjung Terbanyak')}
-          />
-          <Gap height={20} />
-          <Card
-            isMostVisitor
-            image={IMGWisata2}
-            title="Resort Jingga"
-            subTitle="Applarang, Kel. Ara"
-            rating="4.8"
-            onPress={() => navigation.push('DetailWisata')}
-          />
-          <Card
-            isMostVisitor
-            image={IMGWisata2}
-            title="Villa Pelangi"
-            subTitle="Pantai Bira, Kel. Bira"
-            rating="4.5"
-            onPress={() => navigation.push('DetailWisata')}
-          />
-          <Card
-            isMostVisitor
-            image={IMGWisata2}
-            title="Resort Jingga"
-            subTitle="Applarang, Kel. Ara"
-            rating="4.8"
-            onPress={() => navigation.push('DetailWisata')}
-          />
-          <Card
-            isMostVisitor
-            image={IMGWisata2}
-            title="Villa Pelangi"
-            subTitle="Pantai Bira, Kel. Bira"
-            rating="4.5"
-            onPress={() => navigation.push('DetailWisata')}
-          />
-        </View>
-      </ScrollView>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.wrapper}>
+            <Gap height={30} />
+            <SectionTitle title="Rekomendasi Penginapan" />
+            <Gap height={20} />
+          </View>
+          <View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <Gap width={30} />
+              <Card
+                isRecommendation
+                image={wisataList.dataWisata[0].foto}
+                title={wisataList.dataWisata[0].nama}
+                subTitle={wisataList.dataWisata[0].lokasi}
+                onPress={() =>
+                  navigation.push('DetailWisata', {
+                    id: wisataList.dataWisata[0]._id,
+                  })
+                }
+              />
+              <Gap width={10} />
+            </ScrollView>
+          </View>
+          <Gap height={35} />
+          <View style={styles.wrapper}>
+            <SectionTitle title="Pengunjung Terbanyak" />
+            <Gap height={20} />
+            {wisataList.dataWisata?.map(wisata => (
+              <Card
+                key={wisata._id}
+                isMostVisitor
+                image={wisata.foto}
+                title={wisata.nama}
+                subTitle={wisata.lokasi}
+                onPress={() =>
+                  navigation.push('DetailWisata', {
+                    id: wisata._id,
+                  })
+                }
+              />
+            ))}
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
@@ -112,5 +107,15 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     paddingHorizontal: 30,
+  },
+  emptyList: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageEmptyLodging: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
   },
 });

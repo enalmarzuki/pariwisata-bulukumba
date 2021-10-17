@@ -17,11 +17,13 @@ const Agenda = ({navigation}) => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.btnBack}
-            onPress={() => navigation.goBack()}>
-            <ICArrow color="#000" />
-          </TouchableOpacity>
+          <View style={styles.btnBackWrapper}>
+            <TouchableOpacity
+              style={styles.btnBack}
+              onPress={() => navigation.goBack()}>
+              <ICArrow color="#000" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.titleHeaderWrapper}>
             <Text style={styles.titleHeader}>Agenda Hari Ini.</Text>
             <TouchableOpacity onPress={() => navigation.navigate('MyModal')}>
@@ -63,6 +65,11 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 30,
     marginBottom: 25,
   },
+  btnBackWrapper: {
+    width: 40,
+    height: 40,
+    marginBottom: 40,
+  },
   btnBack: {
     borderRadius: 10,
     backgroundColor: '#FFFFFF75',
@@ -70,7 +77,6 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
   },
   body: {
     paddingHorizontal: 30,

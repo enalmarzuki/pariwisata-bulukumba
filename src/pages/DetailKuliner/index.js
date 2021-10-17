@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {IMGKuliner1, IMGKuliner2} from '../../assets';
 import {Detail} from '../../components';
+import {actionGetDetailKuliner} from '../../redux/action/kuliner';
+import {colors} from '../../utils';
 
 const rooms = [
   {
@@ -15,17 +19,48 @@ const rooms = [
   },
 ];
 
-export default function index({navigation}) {
+export default function DetailKuliner({route, navigation}) {
+  const detailKuliner = useSelector(state => state.kuliner.dataDetailKuliner);
+  const kuliner = useSelector(state => state.kuliner);
+
+  const dispatch = useDispatch();
+
+  const getDetailKuliner = useCallback(async () => {
+    return dispatch(actionGetDetailKuliner(route.params.id));
+  }, [dispatch, route.params.id]);
+
+  useEffect(() => {
+    getDetailKuliner();
+  }, [getDetailKuliner]);
+
+  if (kuliner.isLoading || detailKuliner === '') {
+    return (
+      <View style={styles.emptyList}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <Detail
-      isLodgingDetail
+      isDetail
       cardNavigation="DetailKuliner"
       navigation={navigation}
-      image={IMGKuliner1}
-      titleSection="Pantai Bira, Kel. Bira"
-      subTitleSection="Pantai Bira, Kel. Bira"
-      description="Villa yang berdiri sejak tahun 2002, menawarkan fasiltias yang sangat lengkap dan langsung menghadap ke pantai. Telah banyak artis dan pejabat yang mempercayai villa kami ketika mereka sedang liburan ke bulukumba."
-      roomsData={rooms}
+      urlDetail="https://skripsi-wulan.herokuapp.com/kuliner"
+      data={detailKuliner[0]}
     />
   );
 }
+
+const styles = StyleSheet.create({
+  emptyList: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageEmptyLodging: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
+  },
+});

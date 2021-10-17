@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {showError} from '../../utils/showMessage';
 import {
   BOOKING_FINISH,
   BOOKING_START,
@@ -46,13 +47,13 @@ export const actionUploadPayment = (id, data) => dispatch => {
 
     console.log('id', id);
 
-    const newData = FormData();
+    const newData = new FormData();
     newData.append('nama', data.nama);
     newData.append('bank', data.bank);
     newData.append('norek', data.norek);
     newData.append('foto', {
       uri: data.foto.uri,
-      name: data.foto.fileName,
+      name: 'buktiPembayaran',
       type: data.foto.type,
     });
 
@@ -67,6 +68,7 @@ export const actionUploadPayment = (id, data) => dispatch => {
         resolve(res.data);
       })
       .catch(err => {
+        showError('Somethings wrong !');
         dispatch({type: BOOKING_FINISH});
         reject(err.response.status);
       });

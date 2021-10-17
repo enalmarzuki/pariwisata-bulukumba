@@ -31,7 +31,7 @@ export default function index({navigation}) {
       <TouchableOpacity
         activeOpacity={0.7}
         style={styles.btnWrapper}
-        onPress={() => console.log('Ke Home')}>
+        onPress={() => navigation.replace('MainApp')}>
         <Text style={styles.btnTitle}>Home</Text>
       </TouchableOpacity>
     </SafeAreaView>
