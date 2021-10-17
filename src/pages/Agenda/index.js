@@ -1,18 +1,56 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  Linking,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Dialog, TextInput} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   ICArrow,
   ICCalendarGreen,
   ICLocation,
   ICLocationGreen,
   ICPlus,
+  IMGEmptyLodging,
 } from '../../assets';
 import {Gap} from '../../components';
-import {fonts} from '../../utils';
+import {actionGetAgenda} from '../../redux/action/agenda';
+import {colors, fonts} from '../../utils';
 
 const Agenda = ({navigation}) => {
+  const userID = useSelector(state => state.auth.dataUser.id);
+  const agendaList = useSelector(state => state.agenda);
+  const dispatch = useDispatch();
+
+  const getAgenda = useCallback(async () => {
+    return dispatch(actionGetAgenda(userID));
+  }, [dispatch, userID]);
+
+  const handleClickOpenMaps = (lat, long) => {
+    const daddr = `${lat},${long}`;
+    const company = Platform.OS === 'ios' ? 'apple' : 'google';
+    Linking.openURL(`http://maps.${company}.com/maps?daddr=${daddr}`);
+  };
+
+  useEffect(() => {
+    getAgenda();
+  }, [getAgenda]);
+
+  if (agendaList.isLoading || agendaList.dataAgenda === '') {
+    return (
+      <View style={styles.emptyList}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -32,19 +70,42 @@ const Agenda = ({navigation}) => {
           </View>
         </View>
         <View style={styles.body}>
-          <View style={styles.cardWrapper}>
-            <View style={styles.cardBody}>
-              <View style={styles.descWrapper}>
-                <ICLocationGreen color="#7DE1C9" />
-                <Text style={styles.title}>Kampoeng Nelayan</Text>
-              </View>
-              <View style={styles.descWrapper}>
-                <ICCalendarGreen color="#7DE1C9" />
-                <Text style={styles.desc}>Applarang, Kel. Ara</Text>
-              </View>
+          {agendaList.dataAgenda.length === 0 ? (
+            <View style={styles.emptyList}>
+              <Image
+                source={IMGEmptyLodging}
+                style={styles.imageEmptyLodging}
+              />
+              <Text>Oopss! Anda tidak memiliki agenda </Text>
             </View>
-            <Text style={styles.time}>12.30</Text>
-          </View>
+          ) : (
+            <>
+              {agendaList.dataAgenda?.map(item => (
+                <TouchableOpacity
+                  key={item._id}
+                  onPress={() =>
+                    handleClickOpenMaps(
+                      item.lokasi.latitude,
+                      item.lokasi.longitude,
+                    )
+                  }>
+                  <View style={styles.cardWrapper}>
+                    <View style={styles.cardBody}>
+                      <View style={styles.descWrapper}>
+                        <ICLocationGreen color="#7DE1C9" />
+                        <Text style={styles.title}>{item.lokasi.nama}</Text>
+                      </View>
+                      <View style={styles.descWrapper}>
+                        <ICCalendarGreen color="#7DE1C9" />
+                        <Text style={styles.desc}>{item.lokasi.lokasi}</Text>
+                      </View>
+                    </View>
+                    <Text style={styles.time}>12.30</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -123,5 +184,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[700],
     fontSize: 18,
     color: '#2B2B2B',
+  },
+  emptyList: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageEmptyLodging: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
   },
 });

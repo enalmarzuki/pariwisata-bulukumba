@@ -1,24 +1,103 @@
-import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
 import {
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+  Image,
+  Linking,
+  NativeEventEmitter,
+  NativeModules,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 import {
+  ICBook,
   ICHome,
   ICKuliner,
   ICWisata,
   IMGBGHome,
   IMGDummyProfile,
-  ICBook,
 } from '../../assets';
 import {Gap} from '../../components/atoms';
 import {fonts} from '../../utils';
-import {useSelector} from 'react-redux';
+import ReactNativeAN from 'react-native-alarm-notification';
+import moment from 'moment';
+
+const {RNAlarmNotification} = NativeModules;
+const RNEmitter = new NativeEventEmitter(RNAlarmNotification);
+
+const alarmNotifData = {
+  title: 'Alarm',
+  message: 'Stand up',
+  vibrate: true,
+  play_sound: true,
+  schedule_type: 'once',
+  channel: 'wakeup',
+  data: {content: 'my notification id is 22'},
+  loop_sound: true,
+  has_button: true,
+};
+
+const repeatAlarmNotifData = {
+  title: 'Alarm',
+  message: 'Stand up',
+  vibrate: true,
+  play_sound: true,
+  channel: 'wakeup',
+  data: {content: 'my notification id is 22'},
+  loop_sound: true,
+  schedule_type: 'repeat',
+  repeat_interval: 'minutely',
+  interval_value: 1, // repeat after 5 minutes
+};
 
 const Home = ({navigation}) => {
   const user = useSelector(state => state.auth);
   console.log('dataUser', user);
+
+  useEffect(() => {
+    // setFutureAlarm();
+    const _subscribeDismiss = RNEmitter.addListener(
+      'OnNotificationDismissed',
+      data => {
+        const obj = JSON.parse(data);
+        console.log(`notification id: ${obj.id} dismissed`);
+      },
+    );
+
+    const _subscribeOpen = RNEmitter.addListener(
+      'OnNotificationOpened',
+      data => {
+        ReactNativeAN.stopAlarmSound();
+        console.log(data);
+        const obj = JSON.parse(data);
+        const daddr = `${obj.lat},${obj.lng}`;
+        const company = Platform.OS === 'ios' ? 'apple' : 'google';
+        Linking.openURL(`http://maps.${company}.com/maps?daddr=${daddr}`);
+        console.log(`app opened by notification: ${obj.id}`);
+      },
+    );
+
+    const _subscribeOpenQuit = RNEmitter.addListener(
+      'getInitialNotification',
+      data => {
+        ReactNativeAN.stopAlarmSound();
+        console.log(data);
+        const obj = JSON.parse(data);
+        const daddr = `${obj.lat},${obj.lng}`;
+        const company = Platform.OS === 'ios' ? 'apple' : 'google';
+        Linking.openURL(`http://maps.${company}.com/maps?daddr=${daddr}`);
+        console.log(`app opened by notification: ${obj.id}`);
+      },
+    );
+
+    return () => {
+      _subscribeDismiss.remove();
+      _subscribeOpen.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
