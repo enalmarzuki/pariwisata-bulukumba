@@ -18,8 +18,10 @@ import Pesanan from './Pesanan';
 import DetailPesanan from './DetailPesanan';
 import KelolaKamar from './KelolaKamar';
 import ListPesanan from './ListPesanan';
+import AdminKamar from './AdminKamar';
 
 export {
+  AdminKamar,
   ListPesanan,
   SplashScreen,
   Home,

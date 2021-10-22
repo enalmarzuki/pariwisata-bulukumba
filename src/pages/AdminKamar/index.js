@@ -10,7 +10,7 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Lightbox from 'react-native-lightbox-v2';
 import {IMGBuktiTF, IMGKamar1} from '../../assets';
-import {Gap} from '../../components/atoms';
+import {Gap, Input} from '../../components/atoms';
 import {fonts} from '../../utils';
 
 const index = ({navigator}) => {
@@ -22,53 +22,23 @@ const index = ({navigator}) => {
             <Image style={styles.kamar} source={IMGKamar1} />
           </View>
           <View style={styles.hargaWrapper}>
-            <Text style={styles.namakamar}>Kamar Reguler</Text>
-            <Text style={styles.hargakamar}>Rp. 220. 000 / Malam</Text>
+            <Text style={styles.namakamar}>Detail Kamar</Text>
           </View>
-          <View>
-            <Text style={styles.informasiWrapper}> Informasi Pemesan</Text>
-          </View>
-          <View style={styles.pembungkus}>
-            <View style={styles.pemesanan}>
-              <Text style={styles.nama1}>Nama</Text>
-              <Text style={styles.nama2}>Jhone Doe</Text>
-            </View>
-            <View style={styles.pemesanan}>
-              <Text style={styles.nama1}>Tipe Kamar</Text>
-              <Text style={styles.nama2}>Reguler</Text>
-            </View>
-            <View style={styles.pemesanan}>
-              <Text style={styles.nama1}>Masuk</Text>
-              <Text style={styles.nama2}>21 Maret 2021</Text>
-            </View>
-            <View style={styles.pemesanan}>
-              <Text style={styles.nama1}>Keluar </Text>
-              <Text style={styles.nama2}>21 Maret 2021</Text>
-            </View>
-            <Gap height={60} />
-            <View style={styles.pemesanan}>
-              <Text style={styles.nama1}>Total</Text>
-              <Text style={styles.total2}>660. 0000</Text>
-            </View>
-            <View style={styles.pemesanan}>
-              <Text style={styles.nama1}>Bukti Pembayaran</Text>
-
-              <Lightbox
-                activeProps={{
-                  style: {
-                    width: Dimensions.get('window').width,
-                    height: Dimensions.get('window').height,
-                  },
-                  resizeMode: 'contain',
-                }}
-                backgroundColor="#00000070">
-                <Image
-                  style={styles.imgBuktiTFWrapper}
-                  resizeMode="cover"
-                  source={IMGBuktiTF}
-                />
-              </Lightbox>
-            </View>
+          <Gap height={30} />
+          <View style={styles.container}>
+            <Input
+              // data={form}
+              label="Nama Kamar"
+              // value={form.namaLengap}
+              // onChangeText={value => setForm('namaLengap', value)}
+            />
+            <Gap height={30} />
+            <Input
+              // data={form}
+              label="Harga"
+              // value={form.namaLengap}
+              // onChangeText={value => setForm('namaLengap', value)}
+            />
           </View>
         </View>
         <Gap height={60} />
@@ -96,6 +66,9 @@ const index = ({navigator}) => {
 export default index;
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 30,
+  },
   btnKonfirmasiWrapper: {
     flexDirection: 'row',
   },
@@ -137,7 +110,7 @@ const styles = StyleSheet.create({
     marginTop: -30,
     backgroundColor: 'white',
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   namakamar: {
     fontSize: 16,

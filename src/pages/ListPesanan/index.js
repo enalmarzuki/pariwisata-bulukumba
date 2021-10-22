@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
@@ -29,7 +30,7 @@ const ListBooking = ({navigation}) => {
 
   useEffect(() => {
     getListBook();
-  }, [getListBook]);
+  }, []);
 
   if (bookingList.isLoading) {
     return (
@@ -63,7 +64,7 @@ const ListBooking = ({navigation}) => {
                   isBookingUser
                   data={pesanan}
                   onPress={() =>
-                    navigation.push('KonfirmasiPembayaran', {
+                    navigation.navigate('KonfirmasiPembayaran', {
                       idPesanan: pesanan._id,
                     })
                   }

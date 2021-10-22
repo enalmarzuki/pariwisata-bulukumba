@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect} from 'react';
 import {
   Image,
@@ -24,6 +25,7 @@ import NumberFormat from 'react-number-format';
 export default function KonfirmasiPembayaran({route, navigation}) {
   const dispatch = useDispatch();
   const detailPesanan = useSelector(state => state.pesananUser.detailPesanan);
+  console.log('detailPesanan', detailPesanan);
   const isLoading = useSelector(state => state.pesananUser.isLoading);
   const roomData = useSelector(state => state.kamar.dataKamar);
   const penginapan = useSelector(
@@ -87,7 +89,7 @@ export default function KonfirmasiPembayaran({route, navigation}) {
     getDetailPesananUser();
     getDetailKamar();
     getDetailPenginapan();
-  }, [getDetailPesananUser, getDetailKamar, getDetailPenginapan]);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

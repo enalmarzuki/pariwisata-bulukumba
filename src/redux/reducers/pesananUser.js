@@ -26,12 +26,14 @@ const reducer = (state = initialState, action) => {
         isLoading: false,
         dataListPesanan: action.value,
       };
+
     case DETAIL_PESANAN_USER_SUCCESS:
       return {
         ...state,
         isLoading: false,
         detailPesanan: action.value,
       };
+
     case PESANAN_USER_FAIL:
       return {
         ...state,

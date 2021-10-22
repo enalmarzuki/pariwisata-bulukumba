@@ -28,6 +28,7 @@ const Agenda = ({navigation}) => {
   const userID = useSelector(state => state.auth.dataUser.id);
   const agendaList = useSelector(state => state.agenda);
   const dispatch = useDispatch();
+  console.log('agendaList', agendaList);
 
   const getAgenda = useCallback(async () => {
     return dispatch(actionGetAgenda(userID));
@@ -100,7 +101,7 @@ const Agenda = ({navigation}) => {
                         <Text style={styles.desc}>{item.lokasi.lokasi}</Text>
                       </View>
                     </View>
-                    <Text style={styles.time}>12.30</Text>
+                    <Text style={styles.time}>{item.jam}</Text>
                   </View>
                 </TouchableOpacity>
               ))}

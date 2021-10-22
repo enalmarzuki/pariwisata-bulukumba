@@ -13,6 +13,8 @@ import {colors, fonts} from '../../../utils';
 export default function CardRecommendation({onPress, image, title, subTitle}) {
   const [orientation, setOrientation] = useState('PORTRAIT');
 
+  console.log('imageasdasd', image);
+
   useEffect(() => {
     Dimensions.addEventListener('change', ({window: {width, height}}) => {
       if (width < height) {

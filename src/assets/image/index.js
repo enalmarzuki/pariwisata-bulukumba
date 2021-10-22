@@ -13,8 +13,10 @@ import IMGOleh2 from './img-oleh2.jpg';
 import IMGLogoBca from './logo-bca.png';
 import IMGBGHome from './img-background-home.png';
 import IMGEmptyLodging from './img-empty-lodging.png';
+import IMGBuktiTF from './img-pesanan.jpg';
 
 export {
+  IMGBuktiTF,
   IMGEmptyLodging,
   IMGBGHome,
   IMGGetStarted,

@@ -33,6 +33,8 @@ export default function Penginapan({navigation}) {
     getPenginapan();
   }, [getPenginapan]);
 
+  console.log('penginapanList', penginapanList);
+
   if (penginapanList.isLoading || penginapanList.dataPenginapan === '') {
     return (
       <View style={styles.emptyList}>
@@ -68,7 +70,7 @@ export default function Penginapan({navigation}) {
               <Gap width={30} />
               <Card
                 isRecommendation
-                image={penginapanList.dataPenginapan[0]?.foto}
+                image={penginapanList.dataPenginapan[0].foto}
                 title={penginapanList.dataPenginapan[0].nama}
                 subTitle={penginapanList.dataPenginapan[0].lokasi}
                 onPress={() =>

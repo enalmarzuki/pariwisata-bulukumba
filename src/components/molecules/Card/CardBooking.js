@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -13,17 +14,18 @@ const TextStatus = props => {
 };
 
 export default function CardBooking({data, onPress}) {
-  const roomData = useSelector(state => state.kamar);
-  const dispatch = useDispatch();
+  // const roomData = useSelector(state => state.kamar);
+  // const dispatch = useDispatch();
   // console.log('roomData', roomData);
+  console.log('data', data);
 
-  const getDetailKamar = useCallback(async () => {
-    return dispatch(actionGetRoom(data.id_kamar));
-  }, [dispatch, data.id_kamar]);
+  // const getDetailKamar = useCallback(async () => {
+  //   return dispatch(actionGetRoom(data.id_kamar));
+  // }, [dispatch, data.id_kamar]);
 
-  useEffect(() => {
-    getDetailKamar();
-  }, [getDetailKamar]);
+  // useEffect(() => {
+  //   getDetailKamar();
+  // }, []);
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -31,14 +33,14 @@ export default function CardBooking({data, onPress}) {
         <View style={styles.cardImage}>
           <Image
             source={{
-              uri: `https://skripsi-wulan.herokuapp.com/image/${roomData.dataKamar.foto}`,
+              uri: `https://skripsi-wulan.herokuapp.com/image/${data.kamar.foto}`,
             }}
             style={styles.cardImage}
           />
         </View>
         <View style={styles.cardBody}>
           <View>
-            <Text style={styles.cardTitle}>{roomData.dataKamar.tipe}</Text>
+            <Text style={styles.cardTitle}>{data.kamar.tipe}</Text>
             <Text style={styles.cardSubTitle}>
               {data?.masuk} - {data?.keluar}
             </Text>
