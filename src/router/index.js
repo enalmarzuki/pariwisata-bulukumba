@@ -26,6 +26,7 @@ import {
   DetailPesanan,
   ListPesanan,
   AdminKamar,
+  TambahPenginapan,
 } from '../pages';
 import {BottomNavigator, TopNavigatior} from '../components';
 import Tambah from '../components/organism/Modal/Agenda/Tambah';
@@ -58,7 +59,7 @@ const MainApp = () => {
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="SplashScreen">
+    <Stack.Navigator initialRouteName="GetStarted">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -72,6 +73,13 @@ const Router = () => {
       <Stack.Screen
         name="AdminPesanan"
         component={Pesanan}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="TambahPenginapan"
+        component={TambahPenginapan}
         options={{
           headerShown: false,
         }}

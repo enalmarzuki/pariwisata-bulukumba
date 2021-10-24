@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   IMGDummyProfile,
   IMGEmptyLodging,
+  IMGLogoBulkum,
   IMGPenginapan1,
   IMGPenginapan2,
 } from '../../assets';
@@ -49,7 +50,7 @@ export default function Penginapan({navigation}) {
         withAvatar
         icColor="#000000"
         title="Penginapan"
-        image={IMGDummyProfile}
+        image={IMGLogoBulkum}
         onPress={() => navigation.goBack()}
       />
 

@@ -13,6 +13,7 @@ import {
   IMGDummyProfile,
   IMGEmptyLodging,
   IMGKuliner2,
+  IMGLogoBulkum,
   IMGOleh1,
   IMGOleh2,
 } from '../../assets';
@@ -48,7 +49,7 @@ export default function OlehOleh({navigation}) {
         withAvatar
         icColor="#000000"
         title="Oleh - Oleh"
-        image={IMGDummyProfile}
+        image={IMGLogoBulkum}
         onPress={() => navigation.goBack()}
       />
 

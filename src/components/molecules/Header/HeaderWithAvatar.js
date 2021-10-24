@@ -13,7 +13,15 @@ export default function HeaderWithAvatar({onPress, title, image, icColor}) {
       </View>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.avatar}>
-        <Image source={image} style={styles.avatar} />
+        <Image
+          source={image}
+          style={{
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            resizeMode: 'contain',
+          }}
+        />
       </View>
     </View>
   );

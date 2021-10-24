@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {IMGDummyProfile, IMGEmptyLodging} from '../../assets';
+import {IMGDummyProfile, IMGEmptyLodging, IMGLogoBulkum} from '../../assets';
 import {Card, Gap, Header, SectionTitle} from '../../components';
 import {actionGetWisata} from '../../redux/action/wisata';
 import {colors} from '../../utils';
@@ -42,7 +42,7 @@ export default function Wisata({navigation}) {
         withAvatar
         icColor="#000000"
         title="Wisata"
-        image={IMGDummyProfile}
+        image={IMGLogoBulkum}
         onPress={() => navigation.goBack()}
       />
 

@@ -14,6 +14,7 @@ import {
   IMGEmptyLodging,
   IMGKuliner1,
   IMGKuliner2,
+  IMGLogoBulkum,
   IMGPenginapan1,
   IMGPenginapan2,
   IMGWisata1,
@@ -51,7 +52,7 @@ export default function Kuliner({navigation}) {
         withAvatar
         icColor="#000000"
         title="Kuliner"
-        image={IMGDummyProfile}
+        image={IMGLogoBulkum}
         onPress={() => navigation.goBack()}
       />
 

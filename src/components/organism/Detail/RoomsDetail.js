@@ -29,12 +29,13 @@ const icon = type => {
 };
 
 export default function RoomsDetail({navigation, data}) {
+  console.log('data', data);
   const user = useSelector(state => state.auth.dataUser);
   const isLoadingBooking = useSelector(state => state.kamar.isLoading);
   const [total, setTotal] = useState(0);
   const [form, setForm] = useForm({
     id_kamar: data._id,
-    harga: data.harga,
+    harga: 0,
     id_pemesan: user.id,
     namaLengap: '',
     noHp: '',
@@ -43,8 +44,8 @@ export default function RoomsDetail({navigation, data}) {
   });
   const dispatch = useDispatch();
 
-  console.log('total', total);
-  console.log('form', form);
+  // console.log('total', total);
+  // console.log('form', form);
 
   const updateData = (e, target) => {
     const date = moment(e).format('DD MMMM YYYY');
@@ -64,12 +65,15 @@ export default function RoomsDetail({navigation, data}) {
         const checkIn = moment(new Date(form.masuk));
         const checkOut = moment(e);
 
+        console.log('form.harga', form.harga);
+
         console.log('difference', difference);
 
         const difference = checkOut.diff(checkIn, 'days');
-        const totalBooking = form.harga * difference;
+        const totalBooking = data.harga * difference;
 
         setTotal(totalBooking);
+        setForm('harga', data.harga);
         return setForm(target, date);
       }
     } else {

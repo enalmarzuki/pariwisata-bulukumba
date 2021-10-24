@@ -24,23 +24,10 @@ import ReactNativeAN from 'react-native-alarm-notification';
 
 DropDownPicker.setListMode('SCROLLVIEW');
 
-const alarmNotifData = {
-  title: 'Alarm',
-  message: 'Stand up',
-  vibrate: true,
-  play_sound: true,
-  schedule_type: 'once',
-  channel: 'wakeup',
-  data: {content: 'my notification id is 22'},
-  loop_sound: true,
-  has_button: true,
-};
-
 const Tambah = ({navigation}) => {
+  const [namaTujuan, setNamaTujuan] = useState('');
   const userID = useSelector(state => state.auth.dataUser.id);
-  const [visible, setVisible] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([]);
+
   const [form, setForm] = useForm({
     id_user: userID,
     tanggal: '',
@@ -48,6 +35,24 @@ const Tambah = ({navigation}) => {
     tipe_lokasi: 'Wisata',
     id_lokasi: '',
   });
+
+  const alarmNotifData = {
+    title: 'Agenda anda',
+    message: `ke ${namaTujuan}`,
+    vibrate: true,
+    play_sound: true,
+    schedule_type: 'once',
+    channel: 'wakeup',
+    data: {content: 'my notification id is 22'},
+    loop_sound: true,
+    has_button: true,
+  };
+
+  const [visible, setVisible] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState([]);
+  console.log('item', items);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -79,6 +84,8 @@ const Tambah = ({navigation}) => {
 
   const handleListChange = callback => {
     console.log('asdasdasd', callback(items));
+    const tes = JSON.parse(callback(items));
+    setNamaTujuan(tes.nama);
     return setForm('id_lokasi', callback(items));
   };
 
@@ -87,9 +94,38 @@ const Tambah = ({navigation}) => {
 
     const fire_date = ReactNativeAN.parseDate(
       new Date(
-        moment(`${form.tanggal} ${form.jam}`, 'DD-MM-YYYY HH:mm').format(
-          'YYYY-MM-DD HH:mm:ss',
-        ),
+        moment(`${form.tanggal} ${form.jam}`, 'DD-MM-YYYY HH:mm').valueOf(),
+      ),
+    );
+
+    const details = {
+      ...alarmNotifData,
+      fire_date,
+      sound_name: 'iphone_ringtone.mp3',
+      data: {
+        nama: JSON.parse(form.id_lokasi).nama,
+        lat: JSON.parse(form.id_lokasi).latitude,
+        lng: JSON.parse(form.id_lokasi).longitude,
+      },
+    };
+    console.log(`alarm set: ${fire_date}`);
+
+    try {
+      const alarm = await ReactNativeAN.scheduleAlarm(details);
+      console.log('alarm', alarm);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const setFutureAlarm1 = async () => {
+    console.log('alarm', `${form.tanggal} ${form.jam}`);
+
+    const fire_date = ReactNativeAN.parseDate(
+      new Date(
+        moment(`${form.tanggal} ${form.jam}`, 'DD-MM-YYYY HH:mm')
+          .subtract(15, 'minutes')
+          .valueOf(),
       ),
     );
 
@@ -115,7 +151,7 @@ const Tambah = ({navigation}) => {
 
   const handleClickAddAgenda = () => {
     setIsLoading(true);
-    // setFutureAlarm();
+
     const newData = {
       id_user: form.id_user,
       tanggal: form.tanggal,
@@ -132,6 +168,7 @@ const Tambah = ({navigation}) => {
         dispatch(actionGetAgenda(userID));
 
         setFutureAlarm();
+        setFutureAlarm1();
 
         navigation.goBack();
         return setVisible(false);

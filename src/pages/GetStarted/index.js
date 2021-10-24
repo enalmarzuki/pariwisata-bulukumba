@@ -10,14 +10,17 @@ import {TextInput} from 'react-native-paper';
 import {ICClose, IMGGetStarted} from '../../assets';
 import {Button, Gap, Link, Loading} from '../../components';
 import {fonts} from '../../utils';
-import {actionLogin} from '../../redux/action/auth';
+import {actionLogin, actionRegister} from '../../redux/action/auth';
 import {useDispatch, useSelector} from 'react-redux';
 
 const GetStarted = ({navigation}) => {
   const [formLogin, setFormLogin] = useState(false);
   const [formRegister, setFormRegister] = useState(false);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [namaLengkap, setNamaLengkap] = useState('');
+
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.auth.isLoading);
   console.log('isLoading', isLoading);
@@ -38,6 +41,32 @@ const GetStarted = ({navigation}) => {
     }
 
     console.log('responseHalaman Login', response);
+  };
+
+  const handleClickRegister = async () => {
+    const data = {
+      email: email.toLowerCase(),
+      password,
+      nama: namaLengkap,
+      level: 'user',
+    };
+
+    const response = await dispatch(actionRegister(data));
+
+    console.log(
+      'response?.diagnostic?.status === 200',
+      response?.diagnostic?.status === 200,
+    );
+
+    if (response?.diagnostic?.status === 200) {
+      setEmail('');
+      setPassword('');
+      setNamaLengkap('');
+      setFormRegister(false);
+      return setFormLogin(true);
+    }
+
+    // console.log('responseHalaman Login', response);
   };
 
   if (formLogin) {
@@ -128,49 +157,61 @@ const GetStarted = ({navigation}) => {
           <Gap height={24} />
 
           <TextInput
+            value={namaLengkap}
             label="Nama Lengkap"
             style={styles.inputFormLogin}
+            underlineColor={'#000'}
             theme={{
-              colors: {background: 'transparent', primary: '#000'},
+              colors: {
+                background: 'transparent',
+                primary: '#000',
+                text: '#000',
+                placeholder: '#000',
+              },
             }}
+            onChangeText={value => setNamaLengkap(value)}
           />
 
           <Gap height={16} />
 
           <TextInput
+            value={email}
             label="Email"
             style={styles.inputFormLogin}
+            underlineColor={'#000'}
             theme={{
-              colors: {background: 'transparent', primary: '#000'},
+              colors: {
+                background: 'transparent',
+                primary: '#000',
+                text: '#000',
+                placeholder: '#000',
+              },
             }}
+            onChangeText={value => setEmail(value)}
           />
 
           <Gap height={16} />
 
           <TextInput
+            value={password}
+            onChangeText={value => setPassword(value)}
             label="Kata Sandi"
             secureTextEntry={true}
+            underlineColor={'#000'}
             style={styles.inputFormLogin}
             theme={{
-              colors: {background: 'transparent', primary: '#000'},
+              colors: {
+                background: 'transparent',
+                primary: '#000',
+                text: '#000',
+                placeholder: '#000',
+              },
             }}
-          />
-          <Gap height={16} />
-
-          <TextInput
-            label="Ulangi Kata Sandi"
-            secureTextEntry={true}
-            style={styles.inputFormLogin}
-            theme={
-              {
-                // colors: {background: 'transparent', primary: '#000'},
-              }
-            }
           />
 
           <Gap height={30} />
 
-          <Button title="Daftar" onPress={() => setFormLogin(true)} />
+          <Button title="Daftar" onPress={handleClickRegister} />
 
           <View style={styles.wrapperShowRegistrasi}>
             <Text>Sudah Punya Akun ? </Text>
@@ -185,6 +226,7 @@ const GetStarted = ({navigation}) => {
             />
           </View>
         </View>
+        {isLoading && <Loading />}
       </ImageBackground>
     );
   }

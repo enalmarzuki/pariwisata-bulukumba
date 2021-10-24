@@ -19,6 +19,7 @@ import {
   ICWisata,
   IMGBGHome,
   IMGDummyProfile,
+  IMGLogoBulkum,
 } from '../../assets';
 import {Gap} from '../../components/atoms';
 import {fonts} from '../../utils';
@@ -106,7 +107,7 @@ const Home = ({navigation}) => {
           <Image source={IMGBGHome} style={styles.imgBG} />
           <View style={styles.avatar}>
             <View style={styles.profileWrapper}>
-              <Image source={IMGDummyProfile} style={styles.imgProfile} />
+              <Image source={IMGLogoBulkum} style={styles.imgProfile} />
             </View>
             <Text style={styles.name}>{user.dataUser.nama || 'Anonym'}</Text>
             <Text style={styles.job}>Web Desainer</Text>
@@ -198,8 +199,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   imgProfile: {
+    flex: 1,
     width: '100%',
     height: '100%',
+    resizeMode: 'contain',
   },
   name: {
     fontFamily: fonts.primary[700],

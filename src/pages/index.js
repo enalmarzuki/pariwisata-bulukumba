@@ -19,8 +19,10 @@ import DetailPesanan from './DetailPesanan';
 import KelolaKamar from './KelolaKamar';
 import ListPesanan from './ListPesanan';
 import AdminKamar from './AdminKamar';
+import TambahPenginapan from './TambahPenginapan';
 
 export {
+  TambahPenginapan,
   AdminKamar,
   ListPesanan,
   SplashScreen,

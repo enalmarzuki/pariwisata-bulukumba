@@ -39,3 +39,19 @@ export const actionGetDetailPenginapan = id => dispatch => {
       });
   });
 };
+
+export const actionGetAdminPenginapan = id => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch({type: PANGINAPAN_START});
+    axios
+      .get(`https://skripsi-wulan.herokuapp.com/penginapan/list/${id}`)
+      .then(res => {
+        dispatch({type: PANGINAPAN_SUCCESS, value: res.data.result});
+        resolve(res.data);
+      })
+      .catch(err => {
+        dispatch({type: PANGINAPAN_FAIL});
+        reject(err.response.status);
+      });
+  });
+};

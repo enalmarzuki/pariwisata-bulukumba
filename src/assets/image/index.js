@@ -14,8 +14,10 @@ import IMGLogoBca from './logo-bca.png';
 import IMGBGHome from './img-background-home.png';
 import IMGEmptyLodging from './img-empty-lodging.png';
 import IMGBuktiTF from './img-pesanan.jpg';
+import IMGLogoBulkum from './img-logo-bulkum.png';
 
 export {
+  IMGLogoBulkum,
   IMGBuktiTF,
   IMGEmptyLodging,
   IMGBGHome,

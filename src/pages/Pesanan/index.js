@@ -1,12 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, {useState, useRef} from 'react';
-import {StyleSheet, Text, Touchable, View, Image} from 'react-native';
+import React, {useState, useRef, useCallback, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  Touchable,
+  View,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
-import {useSelector} from 'react-redux';
-import {IMGPenginapan1} from '../../assets';
+import {useDispatch, useSelector} from 'react-redux';
+import {IMGPenginapan1, ICPlus, IMGEmptyLodging} from '../../assets';
 import {Gap} from '../../components';
-import {fonts} from '../../utils';
+import {actionGetAdminPenginapan} from '../../redux/action/penginapan';
+import {colors, fonts} from '../../utils';
 
 const StatusPesanan = ({status}) => {
   if (status === 'tidak tersedia') {
@@ -17,11 +25,24 @@ const StatusPesanan = ({status}) => {
 
 const index = ({navigation}) => {
   const [initialPage, setInitialPage] = useState(0);
-  const ref = useRef();
   const dataUser = useSelector(state => state.auth.dataUser);
+  const listPenginapan = useSelector(state => state.penginapan);
+  const dispatch = useDispatch();
+  const ref = useRef();
 
-  console.log('dataUser', dataUser);
-  console.log('initialPage', initialPage);
+  console.log('listPenginapan', listPenginapan);
+  // console.log('initialPage', initialPage);
+  // console.log('initialPage', initialPage);
+
+  const getPenginapanAdmin = useCallback(async () => {
+    const response = await dispatch(actionGetAdminPenginapan(dataUser.id));
+
+    return response;
+  }, [dispatch, dataUser.id]);
+
+  useEffect(() => {
+    getPenginapanAdmin();
+  }, [getPenginapanAdmin]);
 
   return (
     <View style={styles.container}>
@@ -43,57 +64,91 @@ const index = ({navigation}) => {
               ref.current.setPage(1);
             }}>
             <Text style={styles.btnTabKelolaKamar(initialPage)}>
-              Kelola Kamar
+              Penginapan
             </Text>
           </TouchableOpacity>
         </View>
       </View>
       <Gap height={25} />
-      <PagerView
-        style={styles.pagerView}
-        initialPage={initialPage}
-        ref={ref}
-        onPageSelected={e => setInitialPage(e.nativeEvent.position)}>
-        <View style={styles.pagerView} key="1">
-          <View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AdminDetailPesanan')}>
-              <View style={styles.cardWrapper}>
-                <View style={styles.pembungkus1}>
-                  <Image style={styles.gambar} source={IMGPenginapan1} />
-                  <View style={styles.cardBody}>
-                    <Text style={styles.kamar1}>Jhon Doe</Text>
-                    <Text style={styles.harga1}>Kamar Reguler</Text>
+
+      {listPenginapan.isLoading ? (
+        <View style={styles.emptyList}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      ) : (
+        <PagerView
+          style={styles.pagerView}
+          initialPage={initialPage}
+          ref={ref}
+          onPageSelected={e => setInitialPage(e.nativeEvent.position)}>
+          <View style={styles.pagerView} key="1">
+            <View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AdminDetailPesanan')}>
+                <View style={styles.cardWrapper}>
+                  <View style={styles.pembungkus1}>
+                    <Image style={styles.gambar} source={IMGPenginapan1} />
+                    <View style={styles.cardBody}>
+                      <Text style={styles.kamar1}>Jhon Doe</Text>
+                      <Text style={styles.harga1}>Kamar Reguler</Text>
+                    </View>
+                  </View>
+
+                  <View>
+                    <StatusPesanan status="setuju" />
                   </View>
                 </View>
-
-                <View>
-                  <StatusPesanan status="setuju" />
-                </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View style={styles.pagerView} key="2">
-          <View>
-            <TouchableOpacity onPress={() => navigation.navigate('AdminKamar')}>
-              <View style={styles.cardWrapper}>
-                <View style={styles.pembungkus1}>
-                  <Image style={styles.gambar} source={IMGPenginapan1} />
-                  <View style={styles.cardBody}>
-                    <Text style={styles.kamar1}>Kamar Reguler</Text>
-                    <Text style={styles.harga1}>Rp. 220. 000 / Malam</Text>
+          <View style={styles.pagerView} key="2">
+            {listPenginapan.dataPenginapan.length === 0 ? (
+              <View style={styles.emptyList}>
+                <Image
+                  source={IMGEmptyLodging}
+                  style={styles.imageEmptyLodging}
+                />
+                <Text>Oopss! Penginapan tidak tersedia </Text>
+              </View>
+            ) : (
+              <>
+                {listPenginapan.dataPenginapan?.map(item => (
+                  <View key={item._id}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('AdminKamar')}>
+                      <View style={styles.cardWrapper}>
+                        <View style={styles.pembungkus1}>
+                          <Image
+                            style={styles.gambar}
+                            source={{
+                              uri: `https://skripsi-wulan.herokuapp.com/image/${item.foto}`,
+                            }}
+                          />
+                          <View style={styles.cardBody}>
+                            <Text style={styles.kamar1}>{item.nama}</Text>
+                            <Text style={styles.harga1}>{item.lokasi}</Text>
+                          </View>
+                        </View>
+
+                        {/* <View>
+                          <StatusPesanan status="tidak tersedia" />
+                        </View> */}
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </View>
+                ))}
+              </>
+            )}
 
-                <View>
-                  <StatusPesanan status="tidak tersedia" />
-                </View>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.btnAddNewRoom}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('TambahPenginapan')}>
+                <ICPlus />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </PagerView>
+        </PagerView>
+      )}
     </View>
   );
 };
@@ -101,6 +156,28 @@ const index = ({navigation}) => {
 export default index;
 
 const styles = StyleSheet.create({
+  emptyList: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageEmptyLodging: {
+    width: 200,
+    height: 200,
+    marginBottom: 30,
+  },
+  btnAddNewRoom: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    backgroundColor: '#7DE1C9',
+    padding: 15,
+    borderRadius: 30,
+  },
+  btnAddNewRoomText: {
+    width: 20,
+    height: 20,
+  },
   textWelcome: {
     color: 'white',
     fontFamily: fonts.primary[600],
@@ -153,7 +230,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -30,
     marginTop: -30,
     paddingTop: 30,
-    paddingHorizontal: 30,
+    paddingHorizontal: 60,
     borderBottomEndRadius: 30,
     borderBottomStartRadius: 30,
   },
@@ -161,6 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 43,
+    marginHorizontal: -30,
   },
   pagerView: {
     flex: 1,
@@ -174,6 +252,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'white',
     borderRadius: 10,
+    marginBottom: 20,
   },
   gambar: {
     height: 83,
@@ -196,52 +275,52 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   setuju: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: fonts.primary[700],
     textTransform: 'capitalize',
     color: 'white',
     backgroundColor: '#7DE1C9',
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     paddingVertical: 3,
     borderRadius: 15,
   },
   tersedia: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: fonts.primary[700],
     textTransform: 'capitalize',
     color: 'white',
     backgroundColor: '#7DE1C9',
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     paddingVertical: 3,
     borderRadius: 15,
   },
   tolak: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: fonts.primary[700],
     textTransform: 'capitalize',
     color: 'white',
     backgroundColor: '#DC0000',
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     paddingVertical: 3,
     borderRadius: 15,
   },
   tidakTersedia: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: fonts.primary[700],
     textTransform: 'capitalize',
     color: 'white',
     backgroundColor: '#DC0000',
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     paddingVertical: 3,
     borderRadius: 15,
   },
   pending: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: fonts.primary[700],
     textTransform: 'capitalize',
     color: 'white',
     backgroundColor: '#FFD200',
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     paddingVertical: 3,
     borderRadius: 15,
   },
