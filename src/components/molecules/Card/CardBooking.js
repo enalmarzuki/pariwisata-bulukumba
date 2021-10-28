@@ -10,6 +10,12 @@ const TextStatus = props => {
   if (props.status.toLowerCase() === 'pending') {
     return <Text style={styles.pendingStatus}>{props.status}</Text>;
   }
+  if (props.status.toLowerCase() === 'setuju') {
+    return <Text style={styles.successStatus}>{props.status}</Text>;
+  }
+  if (props.status.toLowerCase() === 'review') {
+    return <Text style={styles.reviewStatus}>{props.status}</Text>;
+  }
   return <Text style={styles.rejectStatus}>{props.status}</Text>;
 };
 
@@ -33,7 +39,7 @@ export default function CardBooking({data, onPress}) {
         <View style={styles.cardImage}>
           <Image
             source={{
-              uri: `https://skripsi-wulan.herokuapp.com/image/${data.kamar.foto}`,
+              uri: `${data.kamar.foto}`,
             }}
             style={styles.cardImage}
           />
@@ -126,6 +132,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary.normal,
     fontSize: 12,
     backgroundColor: 'red',
+    color: colors.white,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+  },
+  reviewStatus: {
+    fontFamily: fonts.primary.normal,
+    fontSize: 12,
+    backgroundColor: '#a2a2a2',
     color: colors.text.primary,
     paddingVertical: 3,
     paddingHorizontal: 10,

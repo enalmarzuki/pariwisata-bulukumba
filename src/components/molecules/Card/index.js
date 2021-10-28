@@ -64,7 +64,7 @@ export default function index({
         <View style={styles.cardImageWrapper}>
           <Image
             source={{
-              uri: `https://skripsi-wulan.herokuapp.com/image/${data.foto}`,
+              uri: `${data.foto}`,
             }}
             style={styles.cardImage}
           />

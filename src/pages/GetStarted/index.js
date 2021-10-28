@@ -235,7 +235,7 @@ const GetStarted = ({navigation}) => {
     <ImageBackground source={IMGGetStarted} style={styles.page}>
       <View style={styles.titleWrapper}>
         <Text style={styles.title}>
-          agendakan perjalan anda bersama keluarga dengan sangat mudah
+          Agendakan perjalanan anda bersama keluarga dengan sangat mudah
         </Text>
       </View>
 

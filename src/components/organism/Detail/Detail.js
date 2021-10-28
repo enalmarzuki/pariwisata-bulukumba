@@ -55,7 +55,7 @@ export default function Detail({data, urlDetail, navigation, cardNavigation}) {
         <View style={styles.imageWrapper}>
           <Image
             source={{
-              uri: `https://skripsi-wulan.herokuapp.com/image/${dataDetail[0]?.detail.foto}`,
+              uri: `${dataDetail[0]?.detail.foto}`,
             }}
             style={styles.image}
           />

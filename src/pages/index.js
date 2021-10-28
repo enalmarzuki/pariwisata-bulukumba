@@ -20,8 +20,10 @@ import KelolaKamar from './KelolaKamar';
 import ListPesanan from './ListPesanan';
 import AdminKamar from './AdminKamar';
 import TambahPenginapan from './TambahPenginapan';
+import TambahKamar from './TambahKamar';
 
 export {
+  TambahKamar,
   TambahPenginapan,
   AdminKamar,
   ListPesanan,

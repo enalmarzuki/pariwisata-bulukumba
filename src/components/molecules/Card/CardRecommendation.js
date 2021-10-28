@@ -31,7 +31,7 @@ export default function CardRecommendation({onPress, image, title, subTitle}) {
         <View style={styles.cardImage}>
           <Image
             source={{
-              uri: `https://skripsi-wulan.herokuapp.com/image/${image}`,
+              uri: `${image}`,
             }}
             style={styles.cardImage}
           />

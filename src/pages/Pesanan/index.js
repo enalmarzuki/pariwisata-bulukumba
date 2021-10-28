@@ -7,6 +7,8 @@ import {
   View,
   Image,
   ActivityIndicator,
+  ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
@@ -14,6 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {IMGPenginapan1, ICPlus, IMGEmptyLodging} from '../../assets';
 import {Gap} from '../../components';
 import {actionGetAdminPenginapan} from '../../redux/action/penginapan';
+import {actionGetDetailPesananAdmin} from '../../redux/action/pesananUser';
 import {colors, fonts} from '../../utils';
 
 const StatusPesanan = ({status}) => {
@@ -26,7 +29,17 @@ const StatusPesanan = ({status}) => {
 const index = ({navigation}) => {
   const [initialPage, setInitialPage] = useState(0);
   const dataUser = useSelector(state => state.auth.dataUser);
+  const dataPesanan = useSelector(state => state.pesananUser);
+  console.log('dataPesanan', dataPesanan);
   const listPenginapan = useSelector(state => state.penginapan);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getPenginapanAdmin();
+    getPesananAdmin();
+  }, [getPenginapanAdmin, getPesananAdmin]);
   const dispatch = useDispatch();
   const ref = useRef();
 
@@ -36,13 +49,23 @@ const index = ({navigation}) => {
 
   const getPenginapanAdmin = useCallback(async () => {
     const response = await dispatch(actionGetAdminPenginapan(dataUser.id));
+    console.log('response', response);
+    setRefreshing(false);
+
+    return response;
+  }, [dispatch, dataUser.id]);
+
+  const getPesananAdmin = useCallback(async () => {
+    const response = await dispatch(actionGetDetailPesananAdmin(dataUser.id));
+    setRefreshing(false);
 
     return response;
   }, [dispatch, dataUser.id]);
 
   useEffect(() => {
     getPenginapanAdmin();
-  }, [getPenginapanAdmin]);
+    getPesananAdmin();
+  }, [getPenginapanAdmin, getPesananAdmin]);
 
   return (
     <View style={styles.container}>
@@ -82,63 +105,102 @@ const index = ({navigation}) => {
           ref={ref}
           onPageSelected={e => setInitialPage(e.nativeEvent.position)}>
           <View style={styles.pagerView} key="1">
-            <View>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('AdminDetailPesanan')}>
-                <View style={styles.cardWrapper}>
-                  <View style={styles.pembungkus1}>
-                    <Image style={styles.gambar} source={IMGPenginapan1} />
-                    <View style={styles.cardBody}>
-                      <Text style={styles.kamar1}>Jhon Doe</Text>
-                      <Text style={styles.harga1}>Kamar Reguler</Text>
-                    </View>
-                  </View>
-
-                  <View>
-                    <StatusPesanan status="setuju" />
-                  </View>
+            <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
+              {listPenginapan.dataPenginapan.length === 0 ? (
+                <View style={styles.emptyList}>
+                  <Image
+                    source={IMGEmptyLodging}
+                    style={styles.imageEmptyLodging}
+                  />
+                  <Text>Oopss! Penginapan tidak tersedia </Text>
                 </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.pagerView} key="2">
-            {listPenginapan.dataPenginapan.length === 0 ? (
-              <View style={styles.emptyList}>
-                <Image
-                  source={IMGEmptyLodging}
-                  style={styles.imageEmptyLodging}
-                />
-                <Text>Oopss! Penginapan tidak tersedia </Text>
-              </View>
-            ) : (
-              <>
-                {listPenginapan.dataPenginapan?.map(item => (
-                  <View key={item._id}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('AdminKamar')}>
-                      <View style={styles.cardWrapper}>
-                        <View style={styles.pembungkus1}>
-                          <Image
-                            style={styles.gambar}
-                            source={{
-                              uri: `https://skripsi-wulan.herokuapp.com/image/${item.foto}`,
-                            }}
-                          />
-                          <View style={styles.cardBody}>
-                            <Text style={styles.kamar1}>{item.nama}</Text>
-                            <Text style={styles.harga1}>{item.lokasi}</Text>
+              ) : (
+                <>
+                  {dataPesanan?.dataListPesanan?.map(item => (
+                    <View key={item._id}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('AdminDetailPesanan', {
+                            dataPenginapan: item,
+                          })
+                        }>
+                        <View style={styles.cardWrapper}>
+                          <View style={styles.pembungkus1}>
+                            <Image
+                              style={styles.gambar}
+                              source={{
+                                uri: `${item.kamar.foto}`,
+                              }}
+                            />
+                            <View style={styles.cardBody}>
+                              <Text style={styles.kamar1}>{item.pemesan}</Text>
+                              <Text style={styles.harga1}>
+                                {item.kamar.tipe}
+                              </Text>
+                            </View>
+                          </View>
+
+                          <View>
+                            <StatusPesanan status={`${item.status}`} />
                           </View>
                         </View>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </>
+              )}
+            </ScrollView>
+          </View>
+          <View style={styles.pagerView} key="2">
+            <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
+              {listPenginapan.dataPenginapan.length === 0 ? (
+                <View style={styles.emptyList}>
+                  <Image
+                    source={IMGEmptyLodging}
+                    style={styles.imageEmptyLodging}
+                  />
+                  <Text>Oopss! Penginapan tidak tersedia </Text>
+                </View>
+              ) : (
+                <>
+                  {listPenginapan.dataPenginapan?.map(item => (
+                    <View key={item._id}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('AdminKamar', {
+                            dataPenginapan: item,
+                          })
+                        }>
+                        <View style={styles.cardWrapper}>
+                          <View style={styles.pembungkus1}>
+                            <Image
+                              style={styles.gambar}
+                              source={{
+                                uri: `${item.foto}`,
+                              }}
+                            />
+                            <View style={styles.cardBody}>
+                              <Text style={styles.kamar1}>{item.nama}</Text>
+                              <Text style={styles.harga1}>{item.lokasi}</Text>
+                            </View>
+                          </View>
 
-                        {/* <View>
+                          {/* <View>
                           <StatusPesanan status="tidak tersedia" />
                         </View> */}
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                ))}
-              </>
-            )}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </>
+              )}
+            </ScrollView>
 
             <View style={styles.btnAddNewRoom}>
               <TouchableOpacity

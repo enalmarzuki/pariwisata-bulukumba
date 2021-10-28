@@ -120,7 +120,7 @@ export default function RoomsDetail({navigation, data}) {
         <View style={styles.imageWrapper}>
           <Image
             source={{
-              uri: `https://skripsi-wulan.herokuapp.com/image/${data.foto}`,
+              uri: `${data.foto}`,
             }}
             style={styles.image}
           />

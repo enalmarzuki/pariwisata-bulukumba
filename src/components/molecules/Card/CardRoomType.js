@@ -4,14 +4,14 @@ import {colors, fonts} from '../../../utils';
 import NumberFormat from 'react-number-format';
 
 export default function CardRoomType({onPress, image, title, subTitle, data}) {
-  console.log('data asdas', data);
+  // console.log('data asdas', data);
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <View style={styles.cardWrapper}>
         <View style={styles.cardImageWrapper}>
           <Image
             source={{
-              uri: `https://skripsi-wulan.herokuapp.com/image/${data.foto}`,
+              uri: `${data.foto}`,
             }}
             style={styles.cardImage}
           />

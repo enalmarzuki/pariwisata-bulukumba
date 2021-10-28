@@ -41,6 +41,22 @@ export const actionGetDetailPesananUser = id => dispatch => {
   });
 };
 
+export const actionGetDetailPesananAdmin = id => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch({type: PESANAN_USER_START});
+    axios
+      .get(`https://skripsi-wulan.herokuapp.com/pesanan/listAdmin/${id}`)
+      .then(res => {
+        dispatch({type: PESANAN_USER_SUCCESS, value: res.data.result});
+        resolve(res.data);
+      })
+      .catch(err => {
+        dispatch({type: PESANAN_USER_FAIL});
+        reject(err.response.status);
+      });
+  });
+};
+
 export const actionUploadPayment = (id, data) => dispatch => {
   return new Promise((resolve, reject) => {
     dispatch({type: BOOKING_START});

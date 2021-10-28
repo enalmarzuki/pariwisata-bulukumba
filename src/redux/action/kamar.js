@@ -23,6 +23,22 @@ export const actionGetRoom = id => dispatch => {
   });
 };
 
+export const actionGetRoomAdmin = id => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch({type: KAMAR_START});
+    axios
+      .get(`https://skripsi-wulan.herokuapp.com/kamar/list/${id}`)
+      .then(res => {
+        dispatch({type: KAMAR_SUCCESS, value: res.data.result});
+        resolve(res.data);
+      })
+      .catch(err => {
+        dispatch({type: KAMAR_FAIL});
+        reject(err.response.status);
+      });
+  });
+};
+
 export const actionBookingRoom = data => dispatch => {
   return new Promise((resolve, reject) => {
     dispatch({type: BOOKING_START});
