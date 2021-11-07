@@ -65,7 +65,7 @@ const ListBooking = ({navigation}) => {
                   data={pesanan}
                   onPress={() =>
                     navigation.navigate('KonfirmasiPembayaran', {
-                      idPesanan: pesanan._id,
+                      idPesanan: pesanan,
                     })
                   }
                 />

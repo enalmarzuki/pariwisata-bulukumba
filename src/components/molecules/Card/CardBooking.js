@@ -35,6 +35,10 @@ export default function CardBooking({data, onPress}) {
 
   return (
     <TouchableOpacity onPress={onPress}>
+      <View style={styles.wrapperNoPesanan}>
+        <Text style={styles.cardSubTitle}>No. Pesanan : </Text>
+        <Text style={styles.cardSubTitle}>{data?._id}</Text>
+      </View>
       <View style={styles.cardBook}>
         <View style={styles.cardImage}>
           <Image
@@ -44,6 +48,7 @@ export default function CardBooking({data, onPress}) {
             style={styles.cardImage}
           />
         </View>
+
         <View style={styles.cardBody}>
           <View>
             <Text style={styles.cardTitle}>{data.kamar.tipe}</Text>
@@ -71,6 +76,11 @@ export default function CardBooking({data, onPress}) {
 }
 
 const styles = StyleSheet.create({
+  wrapperNoPesanan: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   cardBook: {
     backgroundColor: 'white',
     padding: 15,

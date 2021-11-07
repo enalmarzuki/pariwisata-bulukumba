@@ -21,20 +21,20 @@ const authPersistConfig = {
 const penginapanPersistConfig = {
   key: 'penginapan',
   storage: AsyncStorage,
-  whitelist: ['dataPenginapan', 'dataDetailPenginapan'],
+  whitelist: ['dataPenginapan'],
 };
 
-const kamarPersistConfig = {
-  key: 'kamar',
-  storage: AsyncStorage,
-  whitelist: ['dataKamar'],
-};
+// const kamarPersistConfig = {
+//   key: 'kamar',
+//   storage: AsyncStorage,
+//   whitelist: ['dataKamar'],
+// };
 
-const pesananUserPersistConfig = {
-  key: 'pesananUser',
-  storage: AsyncStorage,
-  whitelist: ['dataListPesanan'],
-};
+// const pesananUserPersistConfig = {
+//   key: 'pesananUser',
+//   storage: AsyncStorage,
+//   whitelist: ['dataListPesanan'],
+// };
 
 const wisataPersistConfig = {
   key: 'wisata',
@@ -75,8 +75,8 @@ const agendaPersistConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, auth),
   penginapan: persistReducer(penginapanPersistConfig, penginapan),
-  kamar: persistReducer(kamarPersistConfig, kamar),
-  pesananUser: persistReducer(pesananUserPersistConfig, pesananUser),
+  kamar: kamar,
+  pesananUser: pesananUser,
   wisata: persistReducer(wisataPersistConfig, wisata),
   detail: persistReducer(detailPersistConfig, detail),
   kuliner: persistReducer(kulinerPersistConfig, kuliner),

@@ -35,6 +35,7 @@ const AdminKamar = ({route, navigation}) => {
   const [sedia, setSedia] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [kamarList, setKamarList] = useState([]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -55,6 +56,7 @@ const AdminKamar = ({route, navigation}) => {
     );
 
     console.log('response', response);
+    setKamarList(response.result);
 
     const dataListKamar = response.result.map(item => ({
       label: item.tipe,
@@ -170,7 +172,7 @@ const AdminKamar = ({route, navigation}) => {
               showsHorizontalScrollIndicator={false}
               style={{marginHorizontal: -30}}>
               <Gap width={30} />
-              {listKamar?.dataKamar?.map(room => (
+              {kamarList?.map(room => (
                 <Card
                   key={room._id}
                   isRoomType

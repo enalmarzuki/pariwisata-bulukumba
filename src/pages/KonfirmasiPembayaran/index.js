@@ -23,6 +23,7 @@ import {actionGetDetailPenginapan} from '../../redux/action/penginapan';
 import NumberFormat from 'react-number-format';
 
 export default function KonfirmasiPembayaran({route, navigation}) {
+  const {params} = route;
   const dispatch = useDispatch();
   const detailPesanan = useSelector(state => state.pesananUser.detailPesanan);
   console.log('detailPesanan', detailPesanan);
@@ -31,9 +32,11 @@ export default function KonfirmasiPembayaran({route, navigation}) {
   const penginapan = useSelector(
     state => state.penginapan.dataDetailPenginapan,
   );
+  console.log('params', params);
+  console.log('penginapan', penginapan);
 
   // console.log('isLoading', isLoading);
-  // console.log('roomData', roomData);
+  console.log('roomData', roomData);
   // console.log('penginapan', penginapan);
   const [form, setForm] = useForm({
     nama: '',
@@ -43,28 +46,25 @@ export default function KonfirmasiPembayaran({route, navigation}) {
   });
 
   const getImage = () => {
-    launchImageLibrary(
-      {quality: 0.5, maxWidth: 200, maxHeight: 200},
-      response => {
-        console.log('response', response);
-        if (response.didCancel || response.error) {
-          showMessage({
-            message: 'oops, sepertinya anda tidak memilih foto',
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
-        } else {
-          console.log('response', response.data);
-          setForm('foto', response?.assets[0]);
-        }
-      },
-    );
+    launchImageLibrary({}, response => {
+      console.log('response', response);
+      if (response.didCancel || response.error) {
+        showMessage({
+          message: 'oops, sepertinya anda tidak memilih foto',
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        console.log('response', response.data);
+        setForm('foto', response?.assets[0]);
+      }
+    });
   };
 
   const handleClickConfirmPayment = async () => {
     const response = await dispatch(
-      actionUploadPayment(detailPesanan._id, form),
+      actionUploadPayment(params.idPesanan._id, form),
     );
     console.log('response', response);
 
@@ -74,12 +74,14 @@ export default function KonfirmasiPembayaran({route, navigation}) {
   };
 
   const getDetailPesananUser = useCallback(async () => {
-    return dispatch(actionGetDetailPesananUser(route.params.idPesanan));
-  }, [dispatch, route.params.idPesanan]);
+    return dispatch(
+      actionGetDetailPesananUser(route.params.idPesanan.id_pemesan),
+    );
+  }, [dispatch, route.params.idPesanan.id_pemesan]);
 
   const getDetailKamar = useCallback(async () => {
-    return dispatch(actionGetRoom(detailPesanan.id_kamar));
-  }, [dispatch, detailPesanan.id_kamar]);
+    return dispatch(actionGetRoom(route.params.idPesanan.id_kamar));
+  }, [dispatch, route.params.idPesanan.id_kamar]);
 
   const getDetailPenginapan = useCallback(async () => {
     return dispatch(actionGetDetailPenginapan(roomData.idPenginapan));
@@ -100,11 +102,13 @@ export default function KonfirmasiPembayaran({route, navigation}) {
             <View>
               <View style={styles.cardHeader}>
                 <SectionTitle title="Detail Transaksi" />
-                <Text style={styles.cardHeaderSubtitle}>Senin, 25/08/2021</Text>
+                {/* <Text style={styles.cardHeaderSubtitle}>Senin, 25/08/2021</Text> */}
               </View>
               <View style={styles.cardBody}>
                 <Text style={styles.cardBodyTitle}>Id Transaksi</Text>
-                <Text style={styles.cardBodySubTitle}>{detailPesanan._id}</Text>
+                <Text style={styles.cardBodySubTitle}>
+                  {params.idPesanan._id}
+                </Text>
               </View>
               <View style={styles.cardBody}>
                 <Text style={styles.cardBodyTitle}>Nama Penginapan</Text>
@@ -112,14 +116,16 @@ export default function KonfirmasiPembayaran({route, navigation}) {
               </View>
               <View style={styles.cardBody}>
                 <Text style={styles.cardBodyTitle}>Tipe Kamar</Text>
-                <Text style={styles.cardBodySubTitle}>{roomData.tipe}</Text>
+                <Text style={styles.cardBodySubTitle}>
+                  {params.idPesanan.kamar.tipe}
+                </Text>
               </View>
             </View>
             <View style={styles.cardFooter}>
               <Text style={styles.cardFooterTitle}>Total Harga</Text>
               <Text style={styles.cardFooterSubTitle}>
                 <NumberFormat
-                  value={detailPesanan.total}
+                  value={params.idPesanan.total}
                   displayType={'text'}
                   thousandSeparator="."
                   decimalSeparator=","

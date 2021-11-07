@@ -4,9 +4,12 @@ import {colors, fonts} from '../../../utils';
 import NumberFormat from 'react-number-format';
 
 export default function CardRoomType({onPress, image, title, subTitle, data}) {
-  // console.log('data asdas', data);
+  console.log('data asdas', data);
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+    <TouchableOpacity
+      disabled={data.sedia !== true}
+      activeOpacity={0.7}
+      onPress={onPress}>
       <View style={styles.cardWrapper}>
         <View style={styles.cardImageWrapper}>
           <Image
@@ -19,14 +22,20 @@ export default function CardRoomType({onPress, image, title, subTitle, data}) {
         <View style={styles.cardBody}>
           <Text style={styles.title}>{data.tipe}</Text>
           <Text style={styles.subTitle}>
-            <NumberFormat
-              value={data.harga}
-              displayType={'text'}
-              thousandSeparator="."
-              decimalSeparator=","
-              prefix={'Rp. '}
-              renderText={value => <Text>{value}</Text>}
-            />
+            {data.sedia ? (
+              <NumberFormat
+                value={data.harga}
+                displayType={'text'}
+                thousandSeparator="."
+                decimalSeparator=","
+                prefix={'Rp. '}
+                renderText={value => <Text>{value}</Text>}
+              />
+            ) : (
+              <View style={styles.notReady}>
+                <Text style={styles.textNotReady}>Tidak Tersedia</Text>
+              </View>
+            )}
           </Text>
         </View>
       </View>
@@ -35,6 +44,15 @@ export default function CardRoomType({onPress, image, title, subTitle, data}) {
 }
 
 const styles = StyleSheet.create({
+  notReady: {
+    backgroundColor: 'red',
+    borderRadius: 20,
+    paddingHorizontal: 5,
+  },
+  textNotReady: {
+    color: 'white',
+    fontSize: 10,
+  },
   cardWrapper: {
     height: 178,
     width: 250,

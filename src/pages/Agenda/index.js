@@ -94,11 +94,11 @@ const Agenda = ({navigation}) => {
                     <View style={styles.cardBody}>
                       <View style={styles.descWrapper}>
                         <ICLocationGreen color="#7DE1C9" />
-                        <Text style={styles.title}>{item.lokasi.nama}</Text>
+                        <Text style={styles.title}>{item.lokasi?.nama}</Text>
                       </View>
                       <View style={styles.descWrapper}>
                         <ICCalendarGreen color="#7DE1C9" />
-                        <Text style={styles.desc}>{item.lokasi.lokasi}</Text>
+                        <Text style={styles.desc}>{item.lokasi?.lokasi}</Text>
                       </View>
                     </View>
                     <Text style={styles.time}>{item.jam}</Text>
