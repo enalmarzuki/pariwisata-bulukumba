@@ -36,6 +36,8 @@ const GetStarted = ({navigation}) => {
     if (response?.diagnostic?.status === 200) {
       if (response?.result.level === 'user') {
         return navigation.replace('MainApp');
+      } else if (response?.result.level === 'super') {
+        return navigation.replace('SuperAdminHome');
       }
       return navigation.replace('AdminPesanan');
     }

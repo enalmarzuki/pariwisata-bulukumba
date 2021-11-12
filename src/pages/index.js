@@ -21,8 +21,14 @@ import ListPesanan from './ListPesanan';
 import AdminKamar from './AdminKamar';
 import TambahPenginapan from './TambahPenginapan';
 import TambahKamar from './TambahKamar';
+import SuperAdminHome from './SuperAdminHome';
+import SuperAdminTambahData from './SuperAdminTambahData';
+import SuperAdminEditData from './SuperAdminEditData';
 
 export {
+  SuperAdminEditData,
+  SuperAdminTambahData,
+  SuperAdminHome,
   TambahKamar,
   TambahPenginapan,
   AdminKamar,

@@ -11,6 +11,7 @@ import kuliner from './kuliner';
 import olehOleh from './olehOleh';
 import destinasi from './destinasi';
 import agenda from './agenda';
+import superAdmin from './superAdmin';
 
 const authPersistConfig = {
   key: 'auth',
@@ -72,6 +73,12 @@ const agendaPersistConfig = {
   whitelist: ['dataAgenda'],
 };
 
+const superAdminPersistConfig = {
+  key: 'superAdmin',
+  storage: AsyncStorage,
+  whitelist: ['dataWisata', 'dataKuliner', 'dataOleh'],
+};
+
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, auth),
   penginapan: persistReducer(penginapanPersistConfig, penginapan),
@@ -83,6 +90,7 @@ const rootReducer = combineReducers({
   olehOleh: persistReducer(olehOlehPersistConfig, olehOleh),
   destinasi: persistReducer(destinationPersistConfig, destinasi),
   agenda: persistReducer(agendaPersistConfig, agenda),
+  superAdmin: persistReducer(superAdminPersistConfig, superAdmin),
 });
 
 export default rootReducer;

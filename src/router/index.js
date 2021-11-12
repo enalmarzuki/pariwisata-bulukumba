@@ -28,6 +28,9 @@ import {
   AdminKamar,
   TambahPenginapan,
   TambahKamar,
+  SuperAdminHome,
+  SuperAdminTambahData,
+  SuperAdminEditData,
 } from '../pages';
 import {BottomNavigator, TopNavigatior} from '../components';
 import Tambah from '../components/organism/Modal/Agenda/Tambah';
@@ -179,6 +182,21 @@ const Router = () => {
       <Stack.Screen
         name="Agenda"
         component={Agenda}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SuperAdminHome"
+        component={SuperAdminHome}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TambahDataSuperAdmin"
+        component={SuperAdminTambahData}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditDataSuperAdmin"
+        component={SuperAdminEditData}
         options={{headerShown: false}}
       />
       <Stack.Group screenOptions={{presentation: 'modal'}}>
